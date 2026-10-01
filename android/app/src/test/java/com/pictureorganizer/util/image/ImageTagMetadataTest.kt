@@ -95,10 +95,17 @@ class ImageTagMetadataTest {
     fun decodeUserCommentBytes_unicodeUtf16Be() {
         val json = """["旅行"]"""
         val payload = json.toByteArray(Charsets.UTF_16BE)
-        val header = byteArrayOf(
-            'U'.code.toByte(), 'N'.code.toByte(), 'I'.code.toByte(), 'C'.code.toByte(),
-            'O'.code.toByte(), 'D'.code.toByte(), 'E'.code.toByte(), 0,
-        )
+        val header =
+            byteArrayOf(
+                'U'.code.toByte(),
+                'N'.code.toByte(),
+                'I'.code.toByte(),
+                'C'.code.toByte(),
+                'O'.code.toByte(),
+                'D'.code.toByte(),
+                'E'.code.toByte(),
+                0,
+            )
         val decoded = ImageTagMetadata.decodeUserCommentBytes(header + payload)
         assertEquals(listOf("旅行"), ImageTagMetadata.parseUserCommentJson(decoded))
     }

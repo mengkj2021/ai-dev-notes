@@ -230,6 +230,5 @@ object ImageTagMetadata {
         return true
     }
 
-    private fun charsetOrUtf8(name: String): Charset =
-        runCatching { Charset.forName(name) }.getOrDefault(Charsets.UTF_8)
+    private fun charsetOrUtf8(name: String): Charset = runCatching { Charset.forName(name) }.getOrDefault(Charsets.UTF_8)
 }

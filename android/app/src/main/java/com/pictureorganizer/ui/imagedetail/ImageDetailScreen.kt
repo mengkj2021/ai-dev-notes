@@ -240,241 +240,196 @@ fun ImageDetailScreen(
                         (maxHeight - DetailMainImageMinHeight - DetailSiblingThumbStripHeight)
                             .coerceAtLeast(120.dp)
                     Column(modifier = Modifier.fillMaxSize()) {
-                    if (current != null) {
-                        ZoomableImage(
-                            file = viewModel.absoluteFile(current),
-                            placeholderColor = Color(current.placeholderColorArgb),
-                            contentKey = current.id,
-                            onScaledChanged = { scaled ->
-                                imageScaled = scaled
+                        if (current != null) {
+                            ZoomableImage(
+                                file = viewModel.absoluteFile(current),
+                                placeholderColor = Color(current.placeholderColorArgb),
+                                contentKey = current.id,
+                                onScaledChanged = { scaled ->
+                                    imageScaled = scaled
 
-                                forceShowEditor = false
-                            },
-                            onTransform = {
-                                if (forceShowEditor) {
                                     forceShowEditor = false
-                                }
-                            },
-                            onSingleTap = {
-                                if (imageScaled) {
-                                    forceShowEditor = !forceShowEditor
-                                }
-                            },
-                            modifier =
-                                Modifier
-                                    .fillMaxWidth()
-                                    .weight(1f)
-                                    .heightIn(min = DetailMainImageMinHeight),
-                        )
-                    } else {
-                        Box(
-                            modifier =
-                                Modifier
-                                    .fillMaxWidth()
-                                    .weight(1f)
-                                    .heightIn(min = DetailMainImageMinHeight),
-                            contentAlignment = Alignment.Center,
-                        ) {
-                            CircularProgressIndicator()
-                        }
-                    }
-
-                    if (showEditor) {
-                        Column(
-                            modifier =
-                                Modifier
-                                    .fillMaxWidth()
-                                    .heightIn(max = maxEditorHeight)
-                                    .verticalScroll(rememberScrollState())
-                                    .padding(horizontal = 16.dp, vertical = 8.dp),
-                            verticalArrangement = Arrangement.spacedBy(8.dp),
-                        ) {
-                            val dateTakenText =
-                                current?.dateTakenMillis?.let { millis ->
-                                    stringResource(
-                                        R.string.detail_date_taken,
-                                        ExifDateTaken.formatForDisplay(millis),
-                                    )
-                                } ?: stringResource(R.string.detail_date_taken_unknown)
-                            Text(
-                                text = dateTakenText,
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                },
+                                onTransform = {
+                                    if (forceShowEditor) {
+                                        forceShowEditor = false
+                                    }
+                                },
+                                onSingleTap = {
+                                    if (imageScaled) {
+                                        forceShowEditor = !forceShowEditor
+                                    }
+                                },
+                                modifier =
+                                    Modifier
+                                        .fillMaxWidth()
+                                        .weight(1f)
+                                        .heightIn(min = DetailMainImageMinHeight),
                             )
-                            // F52：文件体积只读；缩略条切换随 current 重读；缺失/不可读 → 未知文案
-                            val fileSizeBytes =
-                                remember(current?.id, current?.filePath) {
-                                    val item = current ?: return@remember null
-                                    val file = viewModel.absoluteFile(item)
-                                    if (!file.isFile) return@remember null
-                                    file.length().takeIf { it >= 0L }
-                                }
-                            val fileSizeText =
-                                if (fileSizeBytes != null) {
-                                    stringResource(
-                                        R.string.detail_file_size,
-                                        Formatter.formatShortFileSize(context, fileSizeBytes),
-                                    )
-                                } else {
-                                    stringResource(R.string.detail_file_size_unknown)
-                                }
-                            Text(
-                                text = fileSizeText,
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            )
-                            Text(
-                                text = stringResource(R.string.detail_rename),
-                                style = MaterialTheme.typography.titleSmall,
-                            )
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        } else {
+                            Box(
+                                modifier =
+                                    Modifier
+                                        .fillMaxWidth()
+                                        .weight(1f)
+                                        .heightIn(min = DetailMainImageMinHeight),
+                                contentAlignment = Alignment.Center,
                             ) {
-                                OutlinedTextField(
-                                    value = state.renameStemDraft,
-                                    onValueChange = {
-                                        viewModel.onEvent(ImageDetailUiEvent.RenameDraftChanged(it))
-                                    },
-                                    modifier =
-                                        Modifier
-                                            .weight(1f)
-                                            .onFocusChanged { focus ->
-                                                if (!focus.isFocused) {
-                                                    viewModel.onEvent(ImageDetailUiEvent.RenameFocusLost)
-                                                }
-                                            },
-                                    singleLine = true,
-                                    enabled = !state.isBusy,
-                                    suffix = {
-                                        if (state.renameExtension.isNotEmpty()) {
-                                            Text(
-                                                text = ".${state.renameExtension}",
-                                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                            )
-                                        }
-                                    },
-                                )
-                                Button(
-                                    onClick = { viewModel.onEvent(ImageDetailUiEvent.SaveRename) },
-                                    enabled = !state.isBusy,
-                                ) {
-                                    Text(stringResource(R.string.detail_rename_save))
-                                }
+                                CircularProgressIndicator()
                             }
-                            var renameTemplateMenuExpanded by remember { mutableStateOf(false) }
-                            Box {
-                                TextButton(
-                                    onClick = { renameTemplateMenuExpanded = true },
-                                    enabled = !state.isBusy && state.renameTemplates.isNotEmpty(),
-                                ) {
-                                    Text(stringResource(R.string.detail_apply_rename_template))
-                                }
-                                DropdownMenu(
-                                    expanded = renameTemplateMenuExpanded,
-                                    onDismissRequest = { renameTemplateMenuExpanded = false },
-                                ) {
-                                    state.renameTemplates.forEach { template ->
-                                        DropdownMenuItem(
-                                            text = {
-                                                Text(
-                                                    if (template.isDefault) {
-                                                        stringResource(
-                                                            R.string.detail_template_default_fmt,
-                                                            template.name,
-                                                        )
-                                                    } else {
-                                                        template.name
-                                                    },
-                                                )
-                                            },
-                                            onClick = {
-                                                renameTemplateMenuExpanded = false
-                                                viewModel.onEvent(
-                                                    ImageDetailUiEvent.ApplyRenameTemplate(template.id),
-                                                )
-                                            },
-                                        )
-                                    }
-                                }
-                            }
+                        }
 
-                            Text(
-                                text = stringResource(R.string.detail_tags),
-                                style = MaterialTheme.typography.titleSmall,
-                            )
-                            val userTags =
-                                current
-                                    ?.let { ImageListItem.userTagsOf(it.tags) }
-                                    .orEmpty()
-                            val libraryNames = state.libraryTags.map { it.name }.toSet()
-                            var showLibraryPicker by remember { mutableStateOf(false) }
-                            val libraryPickerSheetState =
-                                rememberModalBottomSheetState(skipPartiallyExpanded = true)
-                            val collapseLibrary =
-                                state.libraryTags.size > LIBRARY_TAG_COLLAPSE_THRESHOLD
-                            if (state.libraryTags.isNotEmpty()) {
+                        if (showEditor) {
+                            Column(
+                                modifier =
+                                    Modifier
+                                        .fillMaxWidth()
+                                        .heightIn(max = maxEditorHeight)
+                                        .verticalScroll(rememberScrollState())
+                                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                                verticalArrangement = Arrangement.spacedBy(8.dp),
+                            ) {
+                                val dateTakenText =
+                                    current?.dateTakenMillis?.let { millis ->
+                                        stringResource(
+                                            R.string.detail_date_taken,
+                                            ExifDateTaken.formatForDisplay(millis),
+                                        )
+                                    } ?: stringResource(R.string.detail_date_taken_unknown)
                                 Text(
-                                    text = stringResource(R.string.detail_tag_library),
-                                    style = MaterialTheme.typography.labelMedium,
+                                    text = dateTakenText,
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 )
-                                val libraryChips =
-                                    if (collapseLibrary) {
-                                        state.libraryTags.filter { it.name in userTags }
+                                // F52：文件体积只读；缩略条切换随 current 重读；缺失/不可读 → 未知文案
+                                val fileSizeBytes =
+                                    remember(current?.id, current?.filePath) {
+                                        val item = current ?: return@remember null
+                                        val file = viewModel.absoluteFile(item)
+                                        if (!file.isFile) return@remember null
+                                        file.length().takeIf { it >= 0L }
+                                    }
+                                val fileSizeText =
+                                    if (fileSizeBytes != null) {
+                                        stringResource(
+                                            R.string.detail_file_size,
+                                            Formatter.formatShortFileSize(context, fileSizeBytes),
+                                        )
                                     } else {
-                                        state.libraryTags
+                                        stringResource(R.string.detail_file_size_unknown)
                                     }
-                                if (libraryChips.isNotEmpty()) {
-                                    FlowRow(
-                                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                                        verticalArrangement = Arrangement.spacedBy(4.dp),
-                                    ) {
-                                        libraryChips.forEach { tag ->
-                                            FilterChip(
-                                                selected = tag.name in userTags,
-                                                onClick = {
-                                                    viewModel.onEvent(
-                                                        ImageDetailUiEvent.ToggleLibraryTag(tag.name),
-                                                    )
-                                                },
-                                                enabled = !state.isBusy,
-                                                label = { Text(tag.name) },
-                                            )
-                                        }
-                                    }
-                                }
-                                if (collapseLibrary) {
-                                    OutlinedButton(
-                                        onClick = { showLibraryPicker = true },
-                                        enabled = !state.isBusy,
-                                    ) {
-                                        Text(stringResource(R.string.detail_tag_pick_library))
-                                    }
-                                }
-                            }
-                            if (showLibraryPicker) {
-                                ModalBottomSheet(
-                                    onDismissRequest = { showLibraryPicker = false },
-                                    sheetState = libraryPickerSheetState,
+                                Text(
+                                    text = fileSizeText,
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                )
+                                Text(
+                                    text = stringResource(R.string.detail_rename),
+                                    style = MaterialTheme.typography.titleSmall,
+                                )
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(8.dp),
                                 ) {
-                                    Column(
+                                    OutlinedTextField(
+                                        value = state.renameStemDraft,
+                                        onValueChange = {
+                                            viewModel.onEvent(ImageDetailUiEvent.RenameDraftChanged(it))
+                                        },
                                         modifier =
                                             Modifier
-                                                .fillMaxWidth()
-                                                .padding(horizontal = 16.dp)
-                                                .padding(bottom = 32.dp)
-                                                .verticalScroll(rememberScrollState()),
-                                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                                                .weight(1f)
+                                                .onFocusChanged { focus ->
+                                                    if (!focus.isFocused) {
+                                                        viewModel.onEvent(ImageDetailUiEvent.RenameFocusLost)
+                                                    }
+                                                },
+                                        singleLine = true,
+                                        enabled = !state.isBusy,
+                                        suffix = {
+                                            if (state.renameExtension.isNotEmpty()) {
+                                                Text(
+                                                    text = ".${state.renameExtension}",
+                                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                                )
+                                            }
+                                        },
+                                    )
+                                    Button(
+                                        onClick = { viewModel.onEvent(ImageDetailUiEvent.SaveRename) },
+                                        enabled = !state.isBusy,
                                     ) {
-                                        Text(
-                                            text = stringResource(R.string.detail_tag_pick_library_title),
-                                            style = MaterialTheme.typography.titleMedium,
-                                        )
+                                        Text(stringResource(R.string.detail_rename_save))
+                                    }
+                                }
+                                var renameTemplateMenuExpanded by remember { mutableStateOf(false) }
+                                Box {
+                                    TextButton(
+                                        onClick = { renameTemplateMenuExpanded = true },
+                                        enabled = !state.isBusy && state.renameTemplates.isNotEmpty(),
+                                    ) {
+                                        Text(stringResource(R.string.detail_apply_rename_template))
+                                    }
+                                    DropdownMenu(
+                                        expanded = renameTemplateMenuExpanded,
+                                        onDismissRequest = { renameTemplateMenuExpanded = false },
+                                    ) {
+                                        state.renameTemplates.forEach { template ->
+                                            DropdownMenuItem(
+                                                text = {
+                                                    Text(
+                                                        if (template.isDefault) {
+                                                            stringResource(
+                                                                R.string.detail_template_default_fmt,
+                                                                template.name,
+                                                            )
+                                                        } else {
+                                                            template.name
+                                                        },
+                                                    )
+                                                },
+                                                onClick = {
+                                                    renameTemplateMenuExpanded = false
+                                                    viewModel.onEvent(
+                                                        ImageDetailUiEvent.ApplyRenameTemplate(template.id),
+                                                    )
+                                                },
+                                            )
+                                        }
+                                    }
+                                }
+
+                                Text(
+                                    text = stringResource(R.string.detail_tags),
+                                    style = MaterialTheme.typography.titleSmall,
+                                )
+                                val userTags =
+                                    current
+                                        ?.let { ImageListItem.userTagsOf(it.tags) }
+                                        .orEmpty()
+                                val libraryNames = state.libraryTags.map { it.name }.toSet()
+                                var showLibraryPicker by remember { mutableStateOf(false) }
+                                val libraryPickerSheetState =
+                                    rememberModalBottomSheetState(skipPartiallyExpanded = true)
+                                val collapseLibrary =
+                                    state.libraryTags.size > LIBRARY_TAG_COLLAPSE_THRESHOLD
+                                if (state.libraryTags.isNotEmpty()) {
+                                    Text(
+                                        text = stringResource(R.string.detail_tag_library),
+                                        style = MaterialTheme.typography.labelMedium,
+                                    )
+                                    val libraryChips =
+                                        if (collapseLibrary) {
+                                            state.libraryTags.filter { it.name in userTags }
+                                        } else {
+                                            state.libraryTags
+                                        }
+                                    if (libraryChips.isNotEmpty()) {
                                         FlowRow(
                                             horizontalArrangement = Arrangement.spacedBy(8.dp),
                                             verticalArrangement = Arrangement.spacedBy(4.dp),
                                         ) {
-                                            state.libraryTags.forEach { tag ->
+                                            libraryChips.forEach { tag ->
                                                 FilterChip(
                                                     selected = tag.name in userTags,
                                                     onClick = {
@@ -488,133 +443,178 @@ fun ImageDetailScreen(
                                             }
                                         }
                                     }
-                                }
-                            }
-                            val customTags =
-                                userTags
-                                    .withIndex()
-                                    .filter { (_, name) -> name !in libraryNames }
-                            if (customTags.isNotEmpty()) {
-                                Text(
-                                    text = stringResource(R.string.detail_tag_custom),
-                                    style = MaterialTheme.typography.labelMedium,
-                                )
-                                FlowRow(
-                                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                                    verticalArrangement = Arrangement.spacedBy(4.dp),
-                                ) {
-                                    customTags.forEach { (index, tag) ->
-                                        InputChip(
-                                            selected = state.editingUserTagIndex == index,
-                                            onClick = {
-                                                viewModel.onEvent(ImageDetailUiEvent.StartEditTag(index))
-                                            },
-                                            label = { Text(tag) },
-                                            trailingIcon = {
-                                                Icon(
-                                                    imageVector = Icons.Default.Close,
-                                                    contentDescription = stringResource(R.string.detail_tag_delete),
-                                                    modifier =
-                                                        Modifier
-                                                            .size(18.dp)
-                                                            .clickable {
-                                                                viewModel.onEvent(
-                                                                    ImageDetailUiEvent.DeleteTag(index),
-                                                                )
-                                                            },
-                                                )
-                                            },
-                                        )
+                                    if (collapseLibrary) {
+                                        OutlinedButton(
+                                            onClick = { showLibraryPicker = true },
+                                            enabled = !state.isBusy,
+                                        ) {
+                                            Text(stringResource(R.string.detail_tag_pick_library))
+                                        }
                                     }
                                 }
-                            }
-                            var templateMenuExpanded by remember { mutableStateOf(false) }
-                            Box {
-                                OutlinedButton(
-                                    onClick = { templateMenuExpanded = true },
-                                    enabled = !state.isBusy && state.templates.isNotEmpty(),
-                                ) {
-                                    Text(stringResource(R.string.detail_apply_template))
-                                }
-                                DropdownMenu(
-                                    expanded = templateMenuExpanded,
-                                    onDismissRequest = { templateMenuExpanded = false },
-                                ) {
-                                    state.templates.forEach { template ->
-                                        DropdownMenuItem(
-                                            text = {
-                                                Text(
-                                                    if (template.isDefault) {
-                                                        stringResource(
-                                                            R.string.detail_template_default_fmt,
-                                                            template.name,
-                                                        )
-                                                    } else {
-                                                        template.name
-                                                    },
-                                                )
-                                            },
-                                            onClick = {
-                                                templateMenuExpanded = false
-                                                viewModel.onEvent(
-                                                    ImageDetailUiEvent.ApplyTemplate(template.id),
-                                                )
-                                            },
-                                        )
+                                if (showLibraryPicker) {
+                                    ModalBottomSheet(
+                                        onDismissRequest = { showLibraryPicker = false },
+                                        sheetState = libraryPickerSheetState,
+                                    ) {
+                                        Column(
+                                            modifier =
+                                                Modifier
+                                                    .fillMaxWidth()
+                                                    .padding(horizontal = 16.dp)
+                                                    .padding(bottom = 32.dp)
+                                                    .verticalScroll(rememberScrollState()),
+                                            verticalArrangement = Arrangement.spacedBy(8.dp),
+                                        ) {
+                                            Text(
+                                                text = stringResource(R.string.detail_tag_pick_library_title),
+                                                style = MaterialTheme.typography.titleMedium,
+                                            )
+                                            FlowRow(
+                                                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                                verticalArrangement = Arrangement.spacedBy(4.dp),
+                                            ) {
+                                                state.libraryTags.forEach { tag ->
+                                                    FilterChip(
+                                                        selected = tag.name in userTags,
+                                                        onClick = {
+                                                            viewModel.onEvent(
+                                                                ImageDetailUiEvent.ToggleLibraryTag(tag.name),
+                                                            )
+                                                        },
+                                                        enabled = !state.isBusy,
+                                                        label = { Text(tag.name) },
+                                                    )
+                                                }
+                                            }
+                                        }
                                     }
                                 }
-                            }
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                            ) {
-                                OutlinedTextField(
-                                    value = state.tagDraft,
-                                    onValueChange = {
-                                        viewModel.onEvent(ImageDetailUiEvent.TagDraftChanged(it))
-                                    },
-                                    modifier = Modifier.weight(1f),
-                                    singleLine = true,
-                                    enabled = !state.isBusy,
-                                    label = {
-                                        Text(
-                                            if (state.editingUserTagIndex != null) {
-                                                stringResource(R.string.detail_tag_edit)
-                                            } else {
-                                                stringResource(R.string.detail_tag_add)
-                                            },
-                                        )
-                                    },
-                                )
-                                Button(
-                                    onClick = { viewModel.onEvent(ImageDetailUiEvent.SaveTag) },
-                                    enabled = !state.isBusy,
-                                ) {
-                                    Text(stringResource(R.string.detail_tag_save))
+                                val customTags =
+                                    userTags
+                                        .withIndex()
+                                        .filter { (_, name) -> name !in libraryNames }
+                                if (customTags.isNotEmpty()) {
+                                    Text(
+                                        text = stringResource(R.string.detail_tag_custom),
+                                        style = MaterialTheme.typography.labelMedium,
+                                    )
+                                    FlowRow(
+                                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                        verticalArrangement = Arrangement.spacedBy(4.dp),
+                                    ) {
+                                        customTags.forEach { (index, tag) ->
+                                            InputChip(
+                                                selected = state.editingUserTagIndex == index,
+                                                onClick = {
+                                                    viewModel.onEvent(ImageDetailUiEvent.StartEditTag(index))
+                                                },
+                                                label = { Text(tag) },
+                                                trailingIcon = {
+                                                    Icon(
+                                                        imageVector = Icons.Default.Close,
+                                                        contentDescription = stringResource(R.string.detail_tag_delete),
+                                                        modifier =
+                                                            Modifier
+                                                                .size(18.dp)
+                                                                .clickable {
+                                                                    viewModel.onEvent(
+                                                                        ImageDetailUiEvent.DeleteTag(index),
+                                                                    )
+                                                                },
+                                                    )
+                                                },
+                                            )
+                                        }
+                                    }
                                 }
-                                if (state.editingUserTagIndex != null) {
+                                var templateMenuExpanded by remember { mutableStateOf(false) }
+                                Box {
                                     OutlinedButton(
-                                        onClick = { viewModel.onEvent(ImageDetailUiEvent.CancelEditTag) },
+                                        onClick = { templateMenuExpanded = true },
+                                        enabled = !state.isBusy && state.templates.isNotEmpty(),
+                                    ) {
+                                        Text(stringResource(R.string.detail_apply_template))
+                                    }
+                                    DropdownMenu(
+                                        expanded = templateMenuExpanded,
+                                        onDismissRequest = { templateMenuExpanded = false },
+                                    ) {
+                                        state.templates.forEach { template ->
+                                            DropdownMenuItem(
+                                                text = {
+                                                    Text(
+                                                        if (template.isDefault) {
+                                                            stringResource(
+                                                                R.string.detail_template_default_fmt,
+                                                                template.name,
+                                                            )
+                                                        } else {
+                                                            template.name
+                                                        },
+                                                    )
+                                                },
+                                                onClick = {
+                                                    templateMenuExpanded = false
+                                                    viewModel.onEvent(
+                                                        ImageDetailUiEvent.ApplyTemplate(template.id),
+                                                    )
+                                                },
+                                            )
+                                        }
+                                    }
+                                }
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                ) {
+                                    OutlinedTextField(
+                                        value = state.tagDraft,
+                                        onValueChange = {
+                                            viewModel.onEvent(ImageDetailUiEvent.TagDraftChanged(it))
+                                        },
+                                        modifier = Modifier.weight(1f),
+                                        singleLine = true,
+                                        enabled = !state.isBusy,
+                                        label = {
+                                            Text(
+                                                if (state.editingUserTagIndex != null) {
+                                                    stringResource(R.string.detail_tag_edit)
+                                                } else {
+                                                    stringResource(R.string.detail_tag_add)
+                                                },
+                                            )
+                                        },
+                                    )
+                                    Button(
+                                        onClick = { viewModel.onEvent(ImageDetailUiEvent.SaveTag) },
                                         enabled = !state.isBusy,
                                     ) {
-                                        Text(stringResource(R.string.detail_tag_cancel))
+                                        Text(stringResource(R.string.detail_tag_save))
+                                    }
+                                    if (state.editingUserTagIndex != null) {
+                                        OutlinedButton(
+                                            onClick = { viewModel.onEvent(ImageDetailUiEvent.CancelEditTag) },
+                                            enabled = !state.isBusy,
+                                        ) {
+                                            Text(stringResource(R.string.detail_tag_cancel))
+                                        }
                                     }
                                 }
                             }
                         }
-                    }
 
-                    SiblingThumbStrip(
-                        siblings = state.siblings,
-                        selectedId = state.currentId,
-                        resolveFile = { viewModel.absoluteFile(it) },
-                        onSelect = { viewModel.onEvent(ImageDetailUiEvent.SelectSibling(it)) },
-                        modifier =
-                            Modifier
-                                .fillMaxWidth()
-                                .height(DetailSiblingThumbStripHeight)
-                                .padding(bottom = 8.dp),
-                    )
+                        SiblingThumbStrip(
+                            siblings = state.siblings,
+                            selectedId = state.currentId,
+                            resolveFile = { viewModel.absoluteFile(it) },
+                            onSelect = { viewModel.onEvent(ImageDetailUiEvent.SelectSibling(it)) },
+                            modifier =
+                                Modifier
+                                    .fillMaxWidth()
+                                    .height(DetailSiblingThumbStripHeight)
+                                    .padding(bottom = 8.dp),
+                        )
                     }
                 }
             }
