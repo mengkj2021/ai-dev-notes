@@ -55,4 +55,17 @@ class ExifDateTakenTest {
                 .toEpochMilli()
         assertEquals("2020-05-15 14:30", ExifDateTaken.formatForDisplay(millis))
     }
+
+    @Test
+    fun formatToExif_roundTripsWithParse() {
+        val millis =
+            LocalDateTime
+                .of(2020, 5, 15, 14, 30, 45)
+                .atZone(ZoneId.systemDefault())
+                .toInstant()
+                .toEpochMilli()
+        val raw = ExifDateTaken.formatToExif(millis)
+        assertEquals("2020:05:15 14:30:45", raw)
+        assertEquals(millis, ExifDateTaken.parseToMillis(raw))
+    }
 }

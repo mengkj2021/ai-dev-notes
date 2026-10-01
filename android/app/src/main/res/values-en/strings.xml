@@ -127,6 +127,8 @@
     <string name="detail_exif_warn">Tags saved to the database, but Exif was not written</string>
     <string name="detail_date_taken">Date taken: %1$s</string>
     <string name="detail_date_taken_unknown">Date taken unknown</string>
+    <string name="detail_file_size">File size: %1$s</string>
+    <string name="detail_file_size_unknown">File size unknown</string>
     <string name="detail_tag_library">Tag library</string>
     <string name="detail_tag_pick_library">Choose tags</string>
     <string name="detail_tag_pick_library_title">Choose library tags</string>

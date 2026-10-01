@@ -308,6 +308,12 @@ class ImportViewModel(
                     fileName = prepared.fileName,
                     importedAt = now,
                 )
+                // 压缩/重编码会剥 Exif；回写可迁移副本，便于再导入（Bug16 / F7 遗留扩展）
+                ImageTagMetadata.writeImportMetadata(
+                    file = fileManager.absoluteFile(prepared.filePath),
+                    tags = mergedTags,
+                    dateTakenMillis = dateTakenMillis,
+                )
 
                 ensureTagsInLibrary(mergedTags)
             }

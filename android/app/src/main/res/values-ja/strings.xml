@@ -127,6 +127,8 @@
     <string name="detail_exif_warn">タグはデータベースに保存されましたが、Exif への書き込みに失敗しました</string>
     <string name="detail_date_taken">撮影日：%1$s</string>
     <string name="detail_date_taken_unknown">撮影日不明</string>
+    <string name="detail_file_size">画像サイズ：%1$s</string>
+    <string name="detail_file_size_unknown">画像サイズ不明</string>
     <string name="detail_tag_library">タグライブラリ</string>
     <string name="detail_tag_pick_library">タグを選択</string>
     <string name="detail_tag_pick_library_title">ライブラリからタグを選択</string>

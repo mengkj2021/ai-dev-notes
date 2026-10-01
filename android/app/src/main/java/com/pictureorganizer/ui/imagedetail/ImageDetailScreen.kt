@@ -1,5 +1,6 @@
 package com.pictureorganizer.ui.imagedetail
 
+import android.text.format.Formatter
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -7,6 +8,7 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -17,6 +19,7 @@ import androidx.compose.foundation.layout.exclude
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
@@ -89,6 +92,12 @@ import java.io.File
 private const val TAP_SUPPRESS_AFTER_TRANSFORM_MS = 350L
 
 private const val LIBRARY_TAG_COLLAPSE_THRESHOLD = 10
+
+/** Bug15：主图纵向最低高度，避免编辑区内容过高时被挤到不可浏览。 */
+private val DetailMainImageMinHeight = 200.dp
+
+/** 缩略条固定高度（含底 padding），与 SiblingThumbStrip 调用处一致。 */
+private val DetailSiblingThumbStripHeight = 88.dp
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
@@ -219,13 +228,18 @@ fun ImageDetailScreen(
                 var forceShowEditor by remember(state.currentId) { mutableStateOf(false) }
                 var imageScaled by remember(state.currentId) { mutableStateOf(false) }
                 val showEditor = !imageScaled || forceShowEditor
-                Column(
+                // Bug15：先量可用高度，给编辑区 heightIn(max)，否则 verticalScroll 无界、主图被固有高度挤扁。
+                BoxWithConstraints(
                     modifier =
                         Modifier
                             .fillMaxSize()
                             .padding(innerPadding)
                             .imePadding(),
                 ) {
+                    val maxEditorHeight =
+                        (maxHeight - DetailMainImageMinHeight - DetailSiblingThumbStripHeight)
+                            .coerceAtLeast(120.dp)
+                    Column(modifier = Modifier.fillMaxSize()) {
                     if (current != null) {
                         ZoomableImage(
                             file = viewModel.absoluteFile(current),
@@ -249,14 +263,16 @@ fun ImageDetailScreen(
                             modifier =
                                 Modifier
                                     .fillMaxWidth()
-                                    .weight(1f),
+                                    .weight(1f)
+                                    .heightIn(min = DetailMainImageMinHeight),
                         )
                     } else {
                         Box(
                             modifier =
                                 Modifier
                                     .fillMaxWidth()
-                                    .weight(1f),
+                                    .weight(1f)
+                                    .heightIn(min = DetailMainImageMinHeight),
                             contentAlignment = Alignment.Center,
                         ) {
                             CircularProgressIndicator()
@@ -268,6 +284,7 @@ fun ImageDetailScreen(
                             modifier =
                                 Modifier
                                     .fillMaxWidth()
+                                    .heightIn(max = maxEditorHeight)
                                     .verticalScroll(rememberScrollState())
                                     .padding(horizontal = 16.dp, vertical = 8.dp),
                             verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -281,6 +298,28 @@ fun ImageDetailScreen(
                                 } ?: stringResource(R.string.detail_date_taken_unknown)
                             Text(
                                 text = dateTakenText,
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                            // F52：文件体积只读；缩略条切换随 current 重读；缺失/不可读 → 未知文案
+                            val fileSizeBytes =
+                                remember(current?.id, current?.filePath) {
+                                    val item = current ?: return@remember null
+                                    val file = viewModel.absoluteFile(item)
+                                    if (!file.isFile) return@remember null
+                                    file.length().takeIf { it >= 0L }
+                                }
+                            val fileSizeText =
+                                if (fileSizeBytes != null) {
+                                    stringResource(
+                                        R.string.detail_file_size,
+                                        Formatter.formatShortFileSize(context, fileSizeBytes),
+                                    )
+                                } else {
+                                    stringResource(R.string.detail_file_size_unknown)
+                                }
+                            Text(
+                                text = fileSizeText,
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
@@ -573,9 +612,10 @@ fun ImageDetailScreen(
                         modifier =
                             Modifier
                                 .fillMaxWidth()
-                                .height(88.dp)
+                                .height(DetailSiblingThumbStripHeight)
                                 .padding(bottom = 8.dp),
                     )
+                    }
                 }
             }
         }

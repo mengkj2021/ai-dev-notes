@@ -21,7 +21,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -32,6 +31,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.pictureorganizer.R
 import com.pictureorganizer.ui.common.LogScreenLifecycle
+import com.pictureorganizer.ui.common.ResumedButton
+import com.pictureorganizer.ui.common.ResumedTextButton
 import com.pictureorganizer.ui.theme.PictureOrganizerTheme
 import kotlinx.coroutines.launch
 
@@ -74,7 +75,7 @@ fun TutorialScreen(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.End,
             ) {
-                TextButton(onClick = onFinished) {
+                ResumedTextButton(onClick = onFinished) {
                     Text(stringResource(exitLabelRes))
                 }
             }
@@ -154,7 +155,7 @@ fun TutorialScreen(
                         Text(stringResource(R.string.tutorial_next))
                     }
                 } else {
-                    Button(onClick = onFinished) {
+                    ResumedButton(onClick = onFinished) {
                         Text(stringResource(finishLabelRes))
                     }
                 }

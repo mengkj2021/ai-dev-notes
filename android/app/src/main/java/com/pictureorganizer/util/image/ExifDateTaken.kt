@@ -28,4 +28,12 @@ object ExifDateTaken {
                 .ofEpochMilli(millis)
                 .atZone(ZoneId.systemDefault()),
         )
+
+    fun formatToExif(millis: Long): String =
+        EXIF_FORMAT.format(
+            java.time.Instant
+                .ofEpochMilli(millis)
+                .atZone(ZoneId.systemDefault())
+                .toLocalDateTime(),
+        )
 }

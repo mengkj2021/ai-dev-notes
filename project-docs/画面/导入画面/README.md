@@ -59,6 +59,7 @@
 - `UserPreferencesRepository`：`import_compress_enabled`、`import_duplicate_ask_enabled`、`default_tag_names`（合并进导入标签）
 - **须在** `prepareForImport` 压缩 / 重编码**之前**从源 Uri 读 Exif `UserComment` 与 `DateTimeOriginal`（JPEG 重编码会剥 UserComment，拍摄日也可能丢失）
 - 回读标签与默认标签并集去重后写 `tagsJson`，并进词表
+- **Bug16**：落盘后回写 `UserComment`（ASCII 安全 JSON，`\uXXXX`）与 `DateTimeOriginal` 到私有文件，便于再导入；Room 仍为真源。读侧经 `getAttributeBytes` 解码并剥离 charset 前缀
 - 导入写入 `originalName`（Uri `DISPLAY_NAME`）；判重依赖库内非 null 原图名 + 本批已导入
 - `DateTimeOriginal` → `dateTakenMillis`（解析见 `ExifDateTaken`）；无 / 失败 → null
 - 详见 [架构设计.md](../../架构设计.md)

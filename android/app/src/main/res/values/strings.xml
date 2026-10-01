@@ -127,6 +127,8 @@
     <string name="detail_exif_warn">标签已写入数据库，但文件 Exif 未写入</string>
     <string name="detail_date_taken">拍摄日期：%1$s</string>
     <string name="detail_date_taken_unknown">拍摄日期未知</string>
+    <string name="detail_file_size">图片大小：%1$s</string>
+    <string name="detail_file_size_unknown">图片大小未知</string>
     <string name="detail_tag_library">标签库</string>
     <string name="detail_tag_pick_library">选择标签</string>
     <string name="detail_tag_pick_library_title">选择标签库标签</string>

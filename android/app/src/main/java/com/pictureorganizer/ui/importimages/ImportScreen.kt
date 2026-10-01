@@ -123,7 +123,9 @@ fun ImportScreen(
         onBack { closing = false }
     }
 
-    BackHandler(enabled = !state.isImporting) {
+    // 导入中必须始终启用并吞掉；enabled=false 会把事件交回 Navigation（F10 / 错题本）
+    BackHandler {
+        if (state.isImporting) return@BackHandler
         requestBack()
     }
 

@@ -163,18 +163,22 @@ fun PictureOrganizerNavHost() {
             val fromSettings = entry.arguments?.getBoolean("fromSettings") ?: false
             TutorialScreen(
                 fromSettings = fromSettings,
-                onFinished = {
-                    scope.launch {
-                        if (!fromSettings) {
-                            userPreferences.setTutorialCompleted(true)
-                            navController.navigate(Routes.MAIN) {
-                                popUpTo(0) { inclusive = true }
+                onFinished =
+                    dropUnlessResumed {
+                        scope.launch {
+                            if (!fromSettings) {
+                                userPreferences.setTutorialCompleted(true)
+                                navController.navigate(Routes.MAIN) {
+                                    popUpTo(0) { inclusive = true }
+                                }
+                            } else {
+                                navController.popRouteIfOnTop(
+                                    "tutorial",
+                                    "tutorialBackFromSettings",
+                                )
                             }
-                        } else {
-                            navController.popRouteIfOnTop("tutorial", "tutorialBackFromSettings")
                         }
-                    }
-                },
+                    },
             )
         }
         composable(Routes.MAIN) { entry ->
