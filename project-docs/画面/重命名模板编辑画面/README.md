@@ -40,7 +40,7 @@
 
 | 场景 | 行为 |
 |---|---|
-| 任意（含未保存） | `popBackStack()`，不二次确认 |
+| 任意（含未保存） | 安全 pop（`popRouteIfOnTop`；非裸 `popBackStack`），不二次确认 |
 
 ## 7. 进入与退出
 

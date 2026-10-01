@@ -26,7 +26,7 @@
 - [x] TopAppBar「筛选」+ 返回（不应用）
 - [x] 「未打标签」Checkbox
 - [x] 库内标签多选 Checkbox（OR）
-- [x] 「应用」回传条件并安全返回（仅当仍在 filter 时 `popBackStack`；**Bug6**）
+- [x] 「应用」回传条件并安全返回（`popFilterIfOnTop` / `popRouteIfOnTop`；**Bug6**）
 - [x] 「清除」回传空条件并返回
 - [x] 返回/系统返回与「应用」防连点；关闭过程中吞掉二次 back（**Bug6**）
 - [x] **F6**：文件名包含（文本框）；排序（导入日期新→旧 / 旧→新 / 文件名 A→Z）
@@ -42,8 +42,8 @@
 ## 5. UI 壳层
 
 - 顶部：`TopAppBar` + 返回
-- 主体：文件名输入 + 排序单选 + 拍摄/导入日期起止（DatePicker）+ 可滚动 Checkbox 列表（**Bug6**：内容区 `imePadding`）
-- 底部：清除 / 应用（`navigationBarsPadding`，修复 Bug3 底栏被切）
+- 主体：文件名输入 + 排序单选 + 拍摄/导入日期起止（DatePicker）+ 可滚动 Checkbox 列表（避让由抬升后的底栏 + Scaffold `innerPadding` 承担；**Bug18**）
+- 底部：清除 / 应用（`navigationBars` ∪ `ime` 的 `windowInsetsPadding`：无键盘避导航栏 **Bug3**；有键盘贴键盘上沿 **Bug18**）
 - **Bug6**：`Scaffold.contentWindowInsets` 排除 IME（对照详情 Bug2）
 
 ## 6. 系统返回动作

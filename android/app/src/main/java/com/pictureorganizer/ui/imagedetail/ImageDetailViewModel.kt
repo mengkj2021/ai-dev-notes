@@ -34,7 +34,6 @@ class ImageDetailViewModel(
     private val tagRepository: TagRepository,
     private val renameTemplateRepository: RenameTemplateRepository,
     private val fileManager: AppFileManager,
-    private val visibleSiblingCount: Int = 0,
 ) : ViewModel() {
     private val currentId = MutableStateFlow(initialImageId)
     private val editor = MutableStateFlow(EditorState())
@@ -148,7 +147,7 @@ class ImageDetailViewModel(
         val fromStatus = item.status
         val nextId = nextSiblingIdAfterRemoval(siblings, fromId)
 
-        val goBack = shouldReturnAfterRemoval(siblings, fromId, visibleSiblingCount)
+        val goBack = shouldReturnAfterRemoval(siblings, fromId)
         viewModelScope.launch {
             busy.value = true
             runCatching {
@@ -403,7 +402,6 @@ class ImageDetailViewModel(
         private val tagRepository: TagRepository,
         private val renameTemplateRepository: RenameTemplateRepository,
         private val fileManager: AppFileManager,
-        private val visibleSiblingCount: Int = 0,
     ) : ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T =
@@ -413,7 +411,6 @@ class ImageDetailViewModel(
                 tagRepository,
                 renameTemplateRepository,
                 fileManager,
-                visibleSiblingCount,
             ) as T
     }
 }
@@ -469,8 +466,8 @@ internal fun nextSiblingIdAfterRemoval(
     return if (idx < remaining.size) remaining[idx].id else remaining.last().id
 }
 
+/** S9：仅同状态全量无剩余时回一览（不再看筛选可见数）。 */
 internal fun shouldReturnAfterRemoval(
     siblings: List<ImageListItem>,
     removedId: String,
-    visibleSiblingCount: Int,
-): Boolean = nextSiblingIdAfterRemoval(siblings, removedId) == null || visibleSiblingCount == 1
+): Boolean = nextSiblingIdAfterRemoval(siblings, removedId) == null

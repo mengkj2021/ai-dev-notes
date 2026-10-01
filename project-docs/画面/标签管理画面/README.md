@@ -41,7 +41,7 @@
 
 | 场景 | 行为 |
 |---|---|
-| 有上级 | `popBackStack()` → settings |
+| 有上级 | 安全 pop（`popRouteIfOnTop`；非裸 `popBackStack`）→ settings |
 
 ## 7. 进入与退出
 

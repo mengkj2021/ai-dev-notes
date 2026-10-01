@@ -40,7 +40,7 @@
 
 | 场景 | 行为 |
 |---|---|
-| Idle | `popBackStack()` |
+| Idle | 安全 pop（`popRouteIfOnTop`；非裸 `popBackStack`） |
 | 打包中 | `BackHandler` 拦截 |
 
 ## 7. 进入与退出

@@ -14,7 +14,7 @@
 - 可选参数：`fromSettings`（默认 `false`）
 - 参数说明：
   - `false`（首次）：完成或跳过 → 写入 DataStore `tutorial_completed` → 导航 `main`（替换栈，不回 splash）
-  - `true`（设置重看）：完成或跳过 → **不**改写完成标记 → `popBackStack` 回设置
+  - `true`（设置重看）：完成或跳过 → **不**改写完成标记 → 安全 pop（`popRouteIfOnTop`）回设置
 
 ## 3. 功能清单（总览）
 
@@ -54,7 +54,7 @@
 | 场景 | 行为 |
 |---|---|
 | 首次教程（根引导） | 返回键退出应用（不回 splash） |
-| 从设置进入 | 返回键 / 完成 → `popBackStack` 回设置 |
+| 从设置进入 | 返回键 / 完成 → 安全 pop（`popRouteIfOnTop`；非裸 `popBackStack`）回设置 |
 
 ## 7. 进入与退出
 

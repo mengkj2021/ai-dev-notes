@@ -48,8 +48,6 @@ import kotlinx.coroutines.launch
 
 private const val RENAME_TEMPLATE_SAVED_KEY = "rename_template_saved"
 
-private const val DETAIL_VISIBLE_SIBLING_COUNT_KEY = "detail_visible_sibling_count"
-
 private fun NavController.backQueueBrief(): String =
     currentBackStack.value.joinToString(separator = ">") { entry ->
         entry.destination.route ?: "?"
@@ -58,6 +56,7 @@ private fun NavController.backQueueBrief(): String =
 private fun NavController.popRouteIfOnTop(
     expectedRoutePrefix: String,
     reason: String,
+    requireResumed: Boolean = true,
 ): Boolean {
     val currentEntry = currentBackStackEntry
     val current = currentEntry?.destination?.route
@@ -68,7 +67,8 @@ private fun NavController.popRouteIfOnTop(
     AppLog.d(
         "Nav",
         "popRoute request reason=$reason expect=$expectedRoutePrefix current=$current " +
-            "previous=$previous size=$sizeBefore lifecycle=$lifecycleState queue=$before",
+            "previous=$previous size=$sizeBefore lifecycle=$lifecycleState " +
+            "requireResumed=$requireResumed queue=$before",
     )
     if (current == null || !current.startsWith(expectedRoutePrefix)) {
         AppLog.w(
@@ -79,7 +79,10 @@ private fun NavController.popRouteIfOnTop(
         return false
     }
 
-    if (lifecycleState != null && !lifecycleState.isAtLeast(Lifecycle.State.RESUMED)) {
+    if (requireResumed &&
+        lifecycleState != null &&
+        !lifecycleState.isAtLeast(Lifecycle.State.RESUMED)
+    ) {
         AppLog.w(
             "Nav",
             "popRoute skipped: lifecycle not RESUMED (reason=$reason lifecycle=$lifecycleState " +
@@ -243,9 +246,6 @@ fun PictureOrganizerNavHost() {
                     navController.navigate(Routes.IMPORT_IMAGES)
                 },
                 onNavigateToDetail = { imageId ->
-
-                    entry.savedStateHandle[DETAIL_VISIBLE_SIBLING_COUNT_KEY] =
-                        mainViewModel.uiState.value.totalCount
                     navController.navigate(Routes.imageDetail(imageId))
                 },
                 onNavigateToSettings = {
@@ -341,19 +341,19 @@ fun PictureOrganizerNavHost() {
             arguments = listOf(navArgument("imageId") { type = NavType.StringType }),
         ) { entry ->
             val imageId = entry.arguments?.getString("imageId").orEmpty()
-
-            val visibleSiblingCount =
-                navController.previousBackStackEntry
-                    ?.savedStateHandle
-                    ?.get<Int>(DETAIL_VISIBLE_SIBLING_COUNT_KEY)
-                    ?: 0
             ImageDetailScreen(
                 imageId = imageId,
                 onBack =
                     dropUnlessResumed {
                         navController.popRouteIfOnTop("image-detail", "detailBack")
                     },
-                visibleSiblingCount = visibleSiblingCount,
+                onLeaveAfterAction = {
+                    navController.popRouteIfOnTop(
+                        expectedRoutePrefix = "image-detail",
+                        reason = "detailLeaveAfterAction",
+                        requireResumed = false,
+                    )
+                },
             )
         }
         composable(Routes.SETTINGS) {

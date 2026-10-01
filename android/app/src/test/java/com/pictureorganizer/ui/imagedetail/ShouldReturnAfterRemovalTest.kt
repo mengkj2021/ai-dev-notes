@@ -6,6 +6,7 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
+/** S9：只按同状态全量判定是否回一览（不再看筛选可见数）。 */
 class ShouldReturnAfterRemovalTest {
     private fun item(id: String) =
         ImageListItem(
@@ -16,25 +17,17 @@ class ShouldReturnAfterRemovalTest {
 
     @Test
     fun aloneInStatus_returnsTrue() {
-        assertTrue(shouldReturnAfterRemoval(listOf(item("a")), "a", visibleSiblingCount = 1))
+        assertTrue(shouldReturnAfterRemoval(listOf(item("a")), "a"))
     }
 
     @Test
-    fun visibleBecameEmpty_returnsTrue_evenIfOtherStatusItemsExist() {
+    fun othersRemainInFullStatus_returnsFalse() {
         val siblings = listOf(item("a"), item("b"), item("c"))
-        assertTrue(shouldReturnAfterRemoval(siblings, "a", visibleSiblingCount = 1))
+        assertFalse(shouldReturnAfterRemoval(siblings, "a"))
     }
 
     @Test
-    fun visibleStillHasOthers_keepsF30Behavior() {
-        val siblings = listOf(item("a"), item("b"), item("c"))
-        assertFalse(shouldReturnAfterRemoval(siblings, "a", visibleSiblingCount = 2))
-    }
-
-    @Test
-    fun unknownVisibleCount_fallsBackToFullStatusRule() {
-        val siblings = listOf(item("a"), item("b"))
-        assertFalse(shouldReturnAfterRemoval(siblings, "a", visibleSiblingCount = 0))
-        assertTrue(shouldReturnAfterRemoval(listOf(item("a")), "a", visibleSiblingCount = 0))
+    fun emptySiblings_returnsTrue() {
+        assertTrue(shouldReturnAfterRemoval(emptyList(), "a"))
     }
 }

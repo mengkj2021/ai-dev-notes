@@ -88,8 +88,7 @@ import com.pictureorganizer.ui.common.showSnackbarReplacing
 import com.pictureorganizer.ui.main.statusNameRes
 import com.pictureorganizer.util.image.ExifDateTaken
 import java.io.File
-
-private const val TAP_SUPPRESS_AFTER_TRANSFORM_MS = 350L
+import kotlinx.coroutines.launch
 
 private const val LIBRARY_TAG_COLLAPSE_THRESHOLD = 10
 
@@ -104,8 +103,8 @@ private val DetailSiblingThumbStripHeight = 88.dp
 fun ImageDetailScreen(
     imageId: String,
     onBack: () -> Unit,
+    onLeaveAfterAction: () -> Unit = onBack,
     modifier: Modifier = Modifier,
-    visibleSiblingCount: Int = 0,
 ) {
     LogScreenLifecycle("ImageDetail")
     val context = LocalContext.current
@@ -120,7 +119,6 @@ fun ImageDetailScreen(
                     tagRepository = app.tagRepository,
                     renameTemplateRepository = app.renameTemplateRepository,
                     fileManager = app.fileManager,
-                    visibleSiblingCount = visibleSiblingCount,
                 ),
         )
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -130,12 +128,19 @@ fun ImageDetailScreen(
         viewModel.effects.collect { effect ->
             when (effect) {
                 is ImageDetailUiEffect.ShowMessage -> {
-                    snackbarHostState.showSnackbarReplacing(context.getString(effect.messageResId))
+                    // Bug19：勿挂起 collect，否则上一张移动成功 Snackbar 会挡住后续 NavigateBack
+                    launch {
+                        snackbarHostState.showSnackbarReplacing(
+                            context.getString(effect.messageResId),
+                        )
+                    }
                 }
                 is ImageDetailUiEffect.ShowMessageText -> {
-                    snackbarHostState.showSnackbarReplacing(effect.text)
+                    launch {
+                        snackbarHostState.showSnackbarReplacing(effect.text)
+                    }
                 }
-                ImageDetailUiEffect.NavigateBack -> onBack()
+                ImageDetailUiEffect.NavigateBack -> onLeaveAfterAction()
             }
         }
     }
@@ -225,9 +230,9 @@ fun ImageDetailScreen(
             }
             else -> {
                 val current = state.current
-                var forceShowEditor by remember(state.currentId) { mutableStateOf(false) }
                 var imageScaled by remember(state.currentId) { mutableStateOf(false) }
-                val showEditor = !imageScaled || forceShowEditor
+                // S8：scale>1 隐藏编辑区；回 1x 显示；不再支持单击强制显示
+                val showEditor = !imageScaled
                 // Bug15：先量可用高度，给编辑区 heightIn(max)，否则 verticalScroll 无界、主图被固有高度挤扁。
                 BoxWithConstraints(
                     modifier =
@@ -245,21 +250,7 @@ fun ImageDetailScreen(
                                 file = viewModel.absoluteFile(current),
                                 placeholderColor = Color(current.placeholderColorArgb),
                                 contentKey = current.id,
-                                onScaledChanged = { scaled ->
-                                    imageScaled = scaled
-
-                                    forceShowEditor = false
-                                },
-                                onTransform = {
-                                    if (forceShowEditor) {
-                                        forceShowEditor = false
-                                    }
-                                },
-                                onSingleTap = {
-                                    if (imageScaled) {
-                                        forceShowEditor = !forceShowEditor
-                                    }
-                                },
+                                onScaledChanged = { scaled -> imageScaled = scaled },
                                 modifier =
                                     Modifier
                                         .fillMaxWidth()
@@ -658,16 +649,11 @@ private fun ZoomableImage(
     placeholderColor: Color,
     contentKey: String,
     onScaledChanged: (Boolean) -> Unit,
-    onTransform: () -> Unit,
-    onSingleTap: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var scale by remember(contentKey) { mutableFloatStateOf(1f) }
     var offset by remember(contentKey) { mutableStateOf(Offset.Zero) }
 
-    val lastTransformUptimeMs = remember(contentKey) { longArrayOf(0L) }
-    val currentOnTransform by rememberUpdatedState(onTransform)
-    val currentOnSingleTap by rememberUpdatedState(onSingleTap)
     val currentOnScaledChanged by rememberUpdatedState(onScaledChanged)
     val context = LocalContext.current
 
@@ -681,23 +667,11 @@ private fun ZoomableImage(
                 .background(MaterialTheme.colorScheme.surfaceVariant)
                 .pointerInput(contentKey) {
                     detectTransformGestures { _, pan, zoom, _ ->
-                        val transformed = zoom != 1f || pan != Offset.Zero
-                        if (transformed) {
-                            lastTransformUptimeMs[0] = System.currentTimeMillis()
-                            currentOnTransform()
-                        }
                         scale = (scale * zoom).coerceIn(1f, 5f)
                         offset = if (scale > 1f) offset + pan else Offset.Zero
                     }
                 }.pointerInput(contentKey) {
                     detectTapGestures(
-                        onTap = {
-                            val sinceTransform = System.currentTimeMillis() - lastTransformUptimeMs[0]
-                            if (sinceTransform < TAP_SUPPRESS_AFTER_TRANSFORM_MS) {
-                                return@detectTapGestures
-                            }
-                            currentOnSingleTap()
-                        },
                         onDoubleTap = {
                             scale = 1f
                             offset = Offset.Zero

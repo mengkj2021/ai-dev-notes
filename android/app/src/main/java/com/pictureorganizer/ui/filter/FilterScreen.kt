@@ -9,10 +9,11 @@ import androidx.compose.foundation.layout.exclude
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.ime
-import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.union
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.verticalScroll
@@ -154,7 +155,7 @@ fun FilterScreen(
                 modifier =
                     Modifier
                         .fillMaxWidth()
-                        .navigationBarsPadding()
+                        .windowInsetsPadding(WindowInsets.navigationBars.union(WindowInsets.ime))
                         .padding(horizontal = 8.dp, vertical = 8.dp),
                 horizontalArrangement = Arrangement.End,
             ) {
@@ -172,7 +173,6 @@ fun FilterScreen(
                 Modifier
                     .fillMaxSize()
                     .padding(innerPadding)
-                    .imePadding()
                     .verticalScroll(rememberScrollState())
                     .padding(horizontal = 16.dp),
         ) {
