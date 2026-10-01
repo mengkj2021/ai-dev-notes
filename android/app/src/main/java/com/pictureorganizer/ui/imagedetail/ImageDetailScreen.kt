@@ -87,8 +87,8 @@ import com.pictureorganizer.ui.common.LogScreenLifecycle
 import com.pictureorganizer.ui.common.showSnackbarReplacing
 import com.pictureorganizer.ui.main.statusNameRes
 import com.pictureorganizer.util.image.ExifDateTaken
-import java.io.File
 import kotlinx.coroutines.launch
+import java.io.File
 
 private const val LIBRARY_TAG_COLLAPSE_THRESHOLD = 10
 
