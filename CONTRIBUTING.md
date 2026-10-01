@@ -12,7 +12,7 @@
 ## 改 App（android / 规格 / 进度）
 
 1. **起票** → 拉 [票_接票开发](prompts/票_接票开发.md)；业务码只改 `android/`。  
-2. 规格写回 `project-docs/`；进度只认票 + [阶段待对应](project-status/阶段/阶段3-全面测试/待对应.md)。  
+2. 规格写回 `project-docs/`；进度只认票 + [阶段待对应](project-status/阶段/阶段4-维护与迭代/待对应.md)。  
 3. 构建见 [android/README.md](android/README.md)。
 
 ## Git

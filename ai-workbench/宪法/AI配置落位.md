@@ -71,7 +71,7 @@
 | 内容 | 路径 |
 |---|---|
 | 式样概述 / 画面清单 | `project-docs/项目概述.md` · `project-docs/画面/` |
-| 是否实现 | `project-status/`（票内状态 + [阶段3 · 待对应](../../project-status/阶段/阶段3-全面测试/待对应.md)） |
+| 是否实现 | `project-status/`（票内状态 + [阶段4 · 待对应](../../project-status/阶段/阶段4-维护与迭代/待对应.md)） |
 | 阶段 / 公开节奏 | `project-status/阶段/README.md`（→ 阶段1/2/3；各有 `待对应.md` + `票目录.md`） |
 | 票节点约定 | `ai-workbench/模板/票/票代号与节点.md` |
 | 架构 / 路由 / 画面 / 数据层 | `project-docs/` |

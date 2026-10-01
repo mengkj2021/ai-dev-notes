@@ -71,7 +71,7 @@ picture-organizer/
 
 **真相源**：`android/app/src/main`（及 `android/gradle/libs.versions.toml`）。文档与代码冲突时，以代码为准或先确认再改。
 
-高频入口：[架构 §2](project-docs/架构设计.md) · [画面清单](project-docs/画面/README.md) · [阶段待对应](project-status/阶段/阶段3-全面测试/待对应.md) · [阶段](project-status/阶段/README.md)
+高频入口：[架构 §2](project-docs/架构设计.md) · [画面清单](project-docs/画面/README.md) · [阶段待对应](project-status/阶段/阶段4-维护与迭代/待对应.md) · [阶段](project-status/阶段/README.md)
 
 ## 克隆与构建
 
