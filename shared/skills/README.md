@@ -25,7 +25,7 @@ shared/skills/<skill-name>/
 | CodeBuddy | `.codebuddy/skills/<skill-name>/SKILL.md` |
 | Cursor | `.cursor/skills/<skill-name>/SKILL.md`（项目技能） |
 
-可选：`assets/` 一并复制。流程类技能变更时，对照 `project-docs/画面/README.md`「新增画面」等权威摘要是否仍一致。
+可选：`assets/` 一并复制。流程类技能变更时，对照 `examples/project-docs/画面/README.md`「新增画面」等权威摘要是否仍一致。
 
 ## 当前技能
 
@@ -35,12 +35,5 @@ shared/skills/<skill-name>/
 | [`implement-screen`](implement-screen/SKILL.md) | 读画面文档 → 实现 Kotlin + 路由注册（含壳层/交互核对） | ✅ 已落地 | **F18** |
 | [`sync-docs`](sync-docs/SKILL.md) | 对照代码对齐 project-docs / project-status（含交叉引用） | ✅ 已落地 | 结构改修已落地 |
 
-### 建议优先补充
-
-| 技能名 | 用途 | 优先级 | 正文票 |
-|--------|------|--------|--------|
-| `update-build-deps` | 添加依赖时同步改 toml + build.gradle + 技术栈 | 中 | 待起 **FN**（节点常 P） |
-
-
-> 本项目全部代码由 AI 开发；上述技能覆盖文档、代码实现与构建配置的重复性流程。  
+> 本项目全部代码由 AI 开发；上述技能覆盖文档、代码实现与文档对齐。  
 > **勿**在未起票时批量建空目录。新文档服从 [`文档分层约定.md`](../../ai-workbench/宪法/文档分层约定.md)。

@@ -1,17 +1,17 @@
 # 起票模板
 
-票库规则：[project-status/票库/README.md](../../../project-status/票库/README.md)。节点：[票代号与节点.md](票代号与节点.md)。
+票库规则：产品车道先选 [examples/project-status/README.md](../../../examples/project-status/README.md)；笔记车道 [体系](../../体系/README.md)。节点：[票代号与节点.md](票代号与节点.md)。
 
 ## 步骤
 
-1. **定票号**：见 [阶段/README](../../../project-status/阶段/README.md)「下一号」（不重置、❌ 不复用）。  
-2. **定节点**：B / V / P（[票代号与节点](票代号与节点.md)）。  
-3. **复制模板** → `project-status/票库/<分区>/票号-简述.md`。  
-4. **填写**：绿档 = 票信息 + 诉求 / 必读路径 / 验收 / 完结复盘；黄红再开模板「扩展」。  
-5. **登记**：分区 README **只加一行**（票号·标题·文件）；**阶段4** [`待对应.md`](../../../project-status/阶段/阶段4-维护与迭代/待对应.md) 加 ☐ 行（阶段3 已闭合；搁置进票目录搁置表）。  
-6. 接票：[`prompts/票_接票开发.md`](../../../prompts/票_接票开发.md)；接票时待对应状态列改为 🚧。
+1. **定车道**：体系 / android / windows  
+2. **定票号**：该车道阶段 README「下一号」（Windows 见该车道 README）  
+3. **定节点**：B / V / P  
+4. **复制模板** → 产品 `examples/project-status/<端>/票库/<分区>/票号-简述.md`，或笔记 `ai-workbench/体系/票库/<分区>/票号-简述.md`  
+5. **登记**：分区 README 加一行；该车道当前 `待对应.md` 加 ☐  
+6. 接票：[`prompts/票_接票开发.md`](../../../prompts/票_接票开发.md)
 
-**状态**：票正文 + 待对应同步；☐/🚧 禁止只写票不写待对应；分区 README 不抄状态。
+产品例子默认 android（阶段4）。AI 层用体系。Windows 仍未立项。
 
 ## 模板
 

@@ -1,25 +1,23 @@
 # AI 如何使用 project-status
 
-> 交付状态：是否实现、票、阶段。入口：[project-status/README.md](../../project-status/README.md)（**开场读序在顶部**）。  
-> **仪表盘**：[阶段4 · 待对应](../../project-status/阶段/阶段4-维护与迭代/待对应.md)（维护与迭代；☐/🚧 必在此）；下一号：[阶段/README](../../project-status/阶段/README.md)。
+> 产品车道：[examples/project-status/README.md](../../examples/project-status/README.md)。  
+> 笔记车道：[体系](../体系/README.md)。
+
+| 车道 | 仪表盘 | 下一号 |
+|---|---|---|
+| 体系 | [维护待对应](../体系/阶段/维护/待对应.md) | [体系阶段](../体系/阶段/README.md) |
+| android | [阶段4 待对应](../../examples/project-status/android/阶段/阶段4-维护与迭代/待对应.md) | [android 阶段](../../examples/project-status/android/阶段/README.md) |
+| windows | [README](../../examples/project-status/windows/README.md)（未立项） | 立项后 Bug1 · S1 · T1 · F1 |
 
 | 是 | 不是 |
 |---|---|
-| 票、验收、复盘、阶段待对应 | 画面规格（→ `project-docs/`） |
-
-```
-project-status/
-├── 阶段/     ← README（下一号 + 待对应纪律）+ 阶段4 待对应（开放）+ 各票目录
-└── 票库/     ← 分区列表 · 票正文 · 附记
-```
+| 该车道的票、验收、阶段 | 画面规格（→ `examples/project-docs/`） |
 
 | 场景 | 动作 |
 |---|---|
-| 接票 | 读票全文；票 → 🚧 时同步 [待对应](../../project-status/阶段/阶段4-维护与迭代/待对应.md) 状态列 |
-| 起票 | 复制 [模板/票/](../模板/票/) → 分区加一行 → **阶段4** `待对应.md` 加 ☐ 行；推进下一号（阶段3 已闭合） |
-| 做到哪了 | **只看** [待对应](../../project-status/阶段/阶段4-维护与迭代/待对应.md) → 票正文；已完成看 [阶段3 票目录](../../project-status/阶段/阶段3-全面测试/票目录.md) / [阶段2 票目录](../../project-status/阶段/阶段2-填充与打磨/票目录.md) |
-| 未决 / 排期 | 待对应 · [阶段/](../../project-status/阶段/README.md) |
-| 无票清理 | 票库 README 附记 **或** 极简 FN（P） |
+| 接票 | 读票；🚧 同步**该车道**待对应 |
+| 起票 | 复制模板 → 该车道分区加一行 → 该车道待对应 ☐ |
+| 做到哪了 | **只看**该车道待对应 |
+| 无票清理 | 该车道票库附记，或体系 FN（P） |
 
-**纪律**：☐/🚧 必须在待对应有行；✅/❌ 删行；搁置进票目录搁置表。详见 [票库 §2](../../project-status/票库/README.md)。  
-与 docs：status=做到哪，docs=做成什么样。
+**纪律**：☐/🚧 必须在该车道待对应有行（Windows 未铺票库前不要硬起票）。

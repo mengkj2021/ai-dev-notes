@@ -5,10 +5,10 @@
 
 ## 怎么用
 
-1. 复制本目录 `ai-workbench/模板/画面文档/` → `project-docs/画面/<画面名>/`
+1. 复制本目录 `ai-workbench/模板/画面文档/` → `examples/project-docs/画面/<画面名>/`
 2. 填写本目录中的 `README.md`（十节结构）
 3. 按需复制 [画面区域文档模板.md](画面区域文档模板.md) 为区域文件（如 `菜单.md`、`一览.md`）
-4. 登记 [`project-docs/路由设计.md`](../../../project-docs/路由设计.md) 第 3 节；更新 [`project-docs/画面/README.md`](../../../project-docs/画面/README.md) 清单
+4. 登记 [`examples/project-docs/路由设计.md`](../../../examples/project-docs/路由设计.md) 第 3 节；更新 [`examples/project-docs/画面/README.md`](../../../examples/project-docs/画面/README.md) 清单
 5. 再按 `create-screen-doc` / `implement-screen` 技能继续
 
 约定：一层目录 = 一个 route；总览始终为 `README.md`。服从 [`文档分层约定.md`](../../宪法/文档分层约定.md)。
@@ -55,7 +55,7 @@
 
 ## 8. 数据依赖
 
-有 ViewModel 的画面请写明：`*UiState` / `*UiEvent` / `*UiEffect`、Repository。架构见 [架构设计.md](../../../project-docs/架构设计.md)。
+有 ViewModel 的画面请写明：`*UiState` / `*UiEvent` / `*UiEffect`、Repository。架构见 [架构设计.md](../../../examples/project-docs/架构设计.md)。
 
 ## 9. 待定事项
 

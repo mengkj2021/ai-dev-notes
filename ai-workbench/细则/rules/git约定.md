@@ -55,7 +55,7 @@
 
 ## push 前门禁（产品票 F19 · ktlint）
 
-克隆后执行一次：`git config core.hooksPath .githooks`。此后 push 时：若本次推送范围内有 `android/` 下 `.kt` / `.kts` 变更则跑 `ktlintCheck`，失败拒绝推送；**仅文档等非 Kotlin 变更则跳过**（秒级结束）。紧急跳过：`git push --no-verify`（不推荐）。
+克隆后执行一次：`git config core.hooksPath .githooks`。此后 push 时：若本次推送范围内有 `examples/android/` 下 `.kt` / `.kts` 变更则跑 `ktlintCheck`，失败拒绝推送；**仅文档等非 Kotlin 变更则跳过**（秒级结束）。紧急跳过：`git push --no-verify`（不推荐）。
 
 `.githooks/pre-push` **须为可执行**（Git 索引 `100755`）。若 hook 不跑，先查：`git ls-files -s .githooks/pre-push` 是否为 `100755`，以及 `git config --get core.hooksPath` 是否为 `.githooks`。
 

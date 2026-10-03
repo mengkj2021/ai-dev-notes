@@ -8,9 +8,9 @@ include 语义：[`ai-workbench/宪法/include约定.md`](../ai-workbench/宪法
 
 ```
 prompts/ + shared/  ←▶ include→  ai-workbench/
-    ↓ 读取 project-status / project-docs
-    ↓ 变更 android/
-    ↓ 回写 project-status / project-docs（过程写票复盘）
+    ↓ 读取 examples/project-docs / 产品 status 或 ai-workbench/体系
+    ↓ 变更 examples/<端>/ 或 AI 层
+    ↓ 回写 docs / 该车道 status
 ```
 
 ## 本目录有什么
@@ -34,4 +34,4 @@ prompts/ + shared/  ←▶ include→  ai-workbench/
 ## 注意事项
 
 - 规则修改后需**新建对话**才生效
-- 首次构建 Android 见仓库根 [README.md](../README.md)
+- 首次构建 Android 例子见仓库根 [README.md](../README.md)（Open `examples/android/`）

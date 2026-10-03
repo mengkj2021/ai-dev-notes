@@ -4,9 +4,9 @@
 
 # implement-screen（画面实现）
 
-本技能以**已有画面文档**为唯一规格输入，完成 Kotlin 实现与路由注册。文档 SOP 见姊妹技能 `create-screen-doc`（**F17**）。
+本技能以**已有画面文档**为唯一规格输入，完成 Kotlin / Compose 实现与路由注册。**仅 Android 例子**（`examples/android/`）。文档 SOP 见 `create-screen-doc`（**F17**）。
 
-权威锚点：`project-docs/架构设计.md` §2；`project-docs/路由设计.md` §2 / §5；对应 `project-docs/画面/<画面名>/README.md`（+ 区域文件）。
+权威锚点：`examples/project-docs/架构设计.md` §2；`examples/project-docs/路由设计.md` §2 / §5；对应 `examples/project-docs/画面/<画面名>/README.md`（+ 区域文件）。
 
 ## 触发条件
 
@@ -16,16 +16,16 @@
 - 用户点名 `implement-screen` / 「按画面文档实现」
 - 接票后文档已齐、进入写码阶段（本技能只覆盖实现部分）
 
-**不要**用于：尚无 `project-docs/画面/<名>/`（先 `create-screen-doc`）；纯文案 / 非画面改动；与本画面无关的 util / data 大改（那些跟票走，不套本 SOP）。
+**不要**用于：尚无 `examples/project-docs/画面/<名>/`（先 `create-screen-doc`）；纯文案 / 非画面改动；与本画面无关的 util / data 大改（那些跟票走，不套本 SOP）。
 
 ## 输入约定（硬性）
 
 | 规则 | 说明 |
 |---|---|
-| 唯一输入 | `project-docs/画面/<画面名>/README.md` + 同目录区域文件；功能以文档勾选 / 描述为准 |
-| 文档 vs 代码冲突 | **先停**：对照本画面 README、[`画面/README`](../../../project-docs/画面/README.md) 清单、路由表、架构 §2；回票或请用户确认后再改。**禁止**为迁就代码擅自改画面文档 |
+| 唯一输入 | `examples/project-docs/画面/<画面名>/README.md` + 同目录区域文件；功能以文档勾选 / 描述为准 |
+| 文档 vs 代码冲突 | **先停**：对照本画面 README、[`画面/README`](../../../examples/project-docs/画面/README.md) 清单、路由表、架构 §2；回票或请用户确认后再改。**禁止**为迁就代码擅自改画面文档 |
 | 待定 | 文档 §9 或票上「待定」未清 → **不实现**该块 |
-| 包结构 | 严格按 `project-docs/架构设计.md` **§2**（`ui/<screen>/`、VM、Routes 集中定义） |
+| 包结构 | 严格按 `examples/project-docs/架构设计.md` **§2**（`ui/<screen>/`、VM、Routes 集中定义） |
 
 ## SOP（五步，顺序固定）
 
@@ -51,7 +51,7 @@
 
 | 内容 | 位置 |
 |---|---|
-| Composable | `android/app/src/main/java/com/pictureorganizer/ui/<screen>/` |
+| Composable | `examples/android/app/src/main/java/com/pictureorganizer/ui/<screen>/` |
 | ViewModel + UiState/Event/Effect | 同包；无业务逻辑则可不建 VM（文档 §8 写「无」时遵守） |
 | route 常量 | **仅** `navigation/Routes.kt`（全小写、多词连字符，见路由 §2） |
 | 导航组装 | `navigation/PictureOrganizerNavHost.kt`（或当前 NavHost 文件） |
@@ -93,12 +93,12 @@
 - [ ] `Routes.kt` + NavHost + 入口导航已注册，route 字符串与文档一致
 - [ ] 壳层清单 A–F 已勾或 N/A
 - [ ] 未擅自改画面文档；冲突已升级
-- [ ] [`project-docs/画面/README.md`](../../../project-docs/画面/README.md) 清单该行若约定「已实现」，由**本票收尾**更新（与接票流程一致）
+- [ ] [`examples/project-docs/画面/README.md`](../../../examples/project-docs/画面/README.md) 清单该行若约定「已实现」，由**本票收尾**更新（与接票流程一致）
 - [ ] 架构 §2.1 已含新包（若新建）
 
 ## 注意事项
 
 - 与 `create-screen-doc` 分工：文档四步 ↔ 本技能实现五步；新画面通常先文档后本技能。
-- 流程文档（`project-docs/画面/README`、路由 §4、dev-convention / 指南）变更时，**同步改本技能 SOP**。
+- 流程文档（`examples/project-docs/画面/README`、路由 §4、dev-convention / 指南）变更时，**同步改本技能 SOP**。
 - 统一源：细则在 `ai-workbench/细则/skills/implement-screen.md`；壳在 `shared/skills/implement-screen/`；改完须同步 `.codebuddy/skills/` 与 `.cursor/skills/`。
 - 本技能不替代起票 / 验收自评 / 票复盘；收尾仍走 `prompts/票_接票开发.md`。

@@ -3,7 +3,7 @@
 # 启用：在仓库根执行  git config core.hooksPath .githooks
 # 本文件须可执行（git 索引 100755）；否则 macOS/Linux 上 hooksPath 启用后仍可能静默不跑
 #
-# 优化：本次推送的提交范围内若无 android/ 下 .kt / .kts 变更，跳过 ktlint（纯文档等推送更快）
+# 优化：本次推送范围内若无 examples/android/ 下 .kt / .kts 变更，跳过 ktlint
 
 ROOT=$(git rev-parse --show-toplevel) || exit 1
 zero=0000000000000000000000000000000000000000
@@ -27,19 +27,19 @@ do
   else
     range="$remote_sha..$local_sha"
   fi
-  if git diff --name-only "$range" 2>/dev/null | grep -E '^android/.*\.(kt|kts)$' >/dev/null 2>&1; then
+  if git diff --name-only "$range" 2>/dev/null | grep -E '^examples/android/.*\.(kt|kts)$' >/dev/null 2>&1; then
     need_ktlint=1
     break
   fi
 done
 
 if [ "$need_ktlint" -eq 0 ]; then
-  echo "[pre-push] 本次推送无 android/ 下 .kt/.kts 变更，跳过 ktlintCheck"
+  echo "[pre-push] 本次推送无 examples/android/ 下 .kt/.kts 变更，跳过 ktlintCheck"
   exit 0
 fi
 
-cd "$ROOT/android" || {
-  echo "[pre-push] 无法进入 android/，中止 push"
+cd "$ROOT/examples/android" || {
+  echo "[pre-push] 无法进入 examples/android/，中止 push"
   exit 1
 }
 
@@ -100,8 +100,8 @@ run_ktlint() {
 if ! run_ktlint; then
   echo ""
   echo "[pre-push] ktlintCheck 失败，已中止 push。"
-  echo "  修复示例：cd android && ./gradlew ktlintFormat"
-  echo "  再确认：  cd android && ./gradlew ktlintCheck"
+  echo "  修复示例：cd examples/android && ./gradlew ktlintFormat"
+  echo "  再确认：  cd examples/android && ./gradlew ktlintCheck"
   echo "  紧急跳过（不推荐）：git push --no-verify"
   exit 1
 fi

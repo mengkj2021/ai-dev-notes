@@ -1,7 +1,7 @@
 ---
 name: sync-docs
 description: >-
-  对照 android/ 当前实现，对齐 project-docs / project-status（含交叉引用抽查）。
+  对照 examples/android/（或当前例子）实现对齐 project-docs / 对应车道 project-status。
   默认只改文档不改业务代码。在用户说整理文档、对齐文档、检查交叉引用、或点名 sync-docs / 拉入 prompts/文档_文档整理.md 时使用。
 ---
 

@@ -4,15 +4,15 @@
 
 # create-screen-doc（新建画面文档）
 
-本技能只做**文档先行**四步 + 填写检查。实现代码见技能 `implement-screen`（**F18**）。
+本技能只做**文档先行**。实现见 `implement-screen`（**F18**）。**仅 Android 例子**；不要用于 Windows 车道。
 
-权威摘要：`project-docs/画面/README.md`「新增画面」、`project-docs/路由设计.md` §4。服从 `ai-workbench/宪法/文档分层约定.md`（新建画面用 `ai-workbench/模板/画面文档/`）。
+权威摘要：`examples/project-docs/画面/README.md`「新增画面」、`examples/project-docs/路由设计.md` §4。服从 `ai-workbench/宪法/文档分层约定.md`（新建画面用 `ai-workbench/模板/画面文档/`）。
 
 ## 触发条件
 
 命中任一即应用本技能：
 
-- 要**新增**一个 route 对应的画面（尚无 `project-docs/画面/<名>/`）
+- 要**新增**一个 route 对应的画面（尚无 `examples/project-docs/画面/<名>/`）
 - 用户点名 `create-screen-doc` / 「新建画面文档」
 - 接票后需先建画面目录再写码（本技能只覆盖文档部分）
 
@@ -35,13 +35,13 @@
 
 ### 1. 复制模板 → 画面目录
 
-1. 复制整目录 `ai-workbench/模板/画面文档/` → `project-docs/画面/<画面名>/`
+1. 复制整目录 `ai-workbench/模板/画面文档/` → `examples/project-docs/画面/<画面名>/`
 2. 保留 `README.md`；按需复制/改名 `画面区域文档模板.md` 为区域文件（如 `列表.md`）
 3. **不要**把 `画面文档模板` 本身改成业务画面
 
 ### 2. 登记路由表
 
-在 `project-docs/路由设计.md` **§3 当前导航图**表追加一行：
+在 `examples/project-docs/路由设计.md` **§3 当前导航图**表追加一行：
 
 | 列 | 填法 |
 |---|---|
@@ -54,7 +54,7 @@
 
 ### 3. 更新画面清单
 
-1. `project-docs/画面/README.md`「当前画面清单」表追加一行：目录 | route | `ui/` 包 | 说明 | 状态（新建通常 `☐ 待实现`）
+1. `examples/project-docs/画面/README.md`「当前画面清单」表追加一行：目录 | route | `ui/` 包 | 说明 | 状态（新建通常 `☐ 待实现`）
 2. （可选）所属阶段 `待对应.md` 若该画面相关未决已关闭则删行 / 更新
 
 两处必改：路由表 + 画面清单（同票一起改）。
@@ -90,9 +90,9 @@
 
 ## 完成后自检
 
-- [ ] `project-docs/画面/<名>/README.md` 存在且十节已填
+- [ ] `examples/project-docs/画面/<名>/README.md` 存在且十节已填
 - [ ] 路由设计 §3 有该 route
-- [ ] `project-docs/画面/README.md` 清单有该行（含状态）
+- [ ] `examples/project-docs/画面/README.md` 清单有该行（含状态）
 - [ ] §5 insets 三条已回答
 - [ ] **尚未**改 `Routes.kt` / NavHost / 写 Screen（留给 `implement-screen`）
 
@@ -101,4 +101,4 @@
 - 流程文档（路由 §4、画面 README「新增画面」）变更时，**同步改本技能 SOP**，保持一致。
 - 统一源文件在 `shared/skills/create-screen-doc/`；改完须同步 `.codebuddy/skills/` 与 `.cursor/skills/`（见 `shared/skills/README.md`）。
 - 不擅自发明 route 命名；冲突先查路由表。
-- 演示/演练目录勿长期留在 `project-docs/画面/` 正式索引；一次性演练后应撤回登记。
+- 演示/演练目录勿长期留在 `examples/project-docs/画面/` 正式索引；一次性演练后应撤回登记。
