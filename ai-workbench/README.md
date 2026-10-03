@@ -19,7 +19,7 @@ prompts/ + shared/  ──▶ include──▶  ai-workbench/
 
 | 分区 | 用途 |
 |---|---|
-| [指南/](指南/) | **人读**：体系总览 · 定位 · docs/status 用法 · [通识](指南/AI开发/00-目录.md) · [GitHub收集](指南/GitHub收集/00-目录.md) |
+| [指南/](指南/) | **人读**：体系总览 · 定位 · docs/status 用法 · [通识](指南/通识/00-目录.md) · [GitHub收集](指南/GitHub收集/00-目录.md) |
 | [体系/](体系/) | 笔记层票库与阶段 |
 | [宪法/](宪法/) | 文档分层 · include · 落位 |
 | [细则/](细则/) | 接票 / prompts / rules / skills 正文（被 ▶ include） |

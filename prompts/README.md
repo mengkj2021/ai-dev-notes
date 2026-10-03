@@ -36,6 +36,12 @@
 |------|------|
 | [文档_文档整理.md](文档_文档整理.md) | `ai-workbench/细则/skills/sync-docs.md`（技能 sync-docs） |
 
+### 收集 · GitHub 摘录
+
+| 文件 | 细则（include） |
+|------|------|
+| [收集_GitHub.md](收集_GitHub.md) | `ai-workbench/细则/prompts/GitHub收集.md` |
+
 ### git · 提交 / 拉取
 
 | 文件 | 细则（include） |

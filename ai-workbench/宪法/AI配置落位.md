@@ -3,7 +3,7 @@
 > **权威落位说明**（主题：AI 配置四象限）。权威目录为本目录（`ai-workbench/`）；产品真相在 `examples/project-docs/` / `examples/project-status/`，**不**整份复制进常驻 rules。  
 > 口诀：`rules = 红绿灯`；`prompts = 这次怎么开车`；`skills = 某一类活的标准作业`；`ai-workbench = 工具箱 + 元文档`；`项目文档 = 地图（按需打开）`。  
 > 闭环见 [文档分层约定.md](文档分层约定.md) **§0**。  
-> 下一号：Android [`阶段 README`](../../examples/project-status/android/阶段/README.md)（**F54** / Bug20 / S10 / T5）；体系 [`阶段 README`](../体系/阶段/README.md)（**F54**）。
+> 下一号：Android [`阶段 README`](../../examples/project-status/android/阶段/README.md)（**F54** / Bug20 / S10 / T5）；体系 [`阶段 README`](../体系/阶段/README.md)（**F55**）。
 
 ## 1. 四象限
 
@@ -55,6 +55,7 @@
 | `文档_文档整理.md` | 对照代码对齐文档（▶ include sync-docs；过程写票复盘，**不**另建开发日志） |
 | `git_提交推送.md` | 按纪律 commit / 可选 push |
 | `git_拉取最新代码.md` | 安全 pull / rebase |
+| `收集_GitHub.md` | 摘录进 `指南/GitHub收集/`（摘录≠ SOP） |
 
 ### 4.3 skills
 
@@ -74,8 +75,8 @@
 | 票库 | `examples/project-status/android/` · `ai-workbench/体系/票库/` |
 | 架构 / 路由 / 画面 | `examples/project-docs/`（[两端差异](../../examples/project-docs/两端差异.md)） |
 | 错题本 / 模板 / 指南 | `ai-workbench/` |
-| AI 通识笔记（非本仓纪律） | [`指南/AI开发/`](../指南/AI开发/00-目录.md) |
-| GitHub 前沿摘录（尚未收集） | [`指南/GitHub收集/00-目录.md`](../指南/GitHub收集/00-目录.md) |
+| AI 通识笔记（非本仓纪律） | [`指南/通识/`](../指南/通识/00-目录.md) |
+| GitHub 前沿摘录 | [`指南/GitHub收集/00-目录.md`](../指南/GitHub收集/00-目录.md)；拉 `prompts/收集_GitHub.md` |
 | 过程 / 完结复盘 | **票内**（开发记录 · 完结复盘）；git 历史 |
 | 分层宪法 + 闭环 | `ai-workbench/宪法/文档分层约定.md` |
 | 仓库结构 / docs·status 用法 | `ai-workbench/指南/` |
@@ -90,7 +91,7 @@
 | 先测后写 | 可测纯逻辑顺序 | `细则/接票/先测后写.md`（依赖产品 **F16**） |
 | 合入方式开关 | `direct-main` / `via-mr` | `细则/rules/git约定.md` |
 | 规则瘦身 | 常驻短、按需长 | 本文 §2 + 开发约定 |
-| AI 通识笔记 | 概念/工具/模式/协作；不覆盖本仓细则 | [`指南/AI开发/00-目录.md`](../指南/AI开发/00-目录.md) |
-| GitHub 收集 | 外部 skills / 资讯 / 仓库摘录；摘录≠ SOP | [`指南/GitHub收集/00-目录.md`](../指南/GitHub收集/00-目录.md) |
+| AI 通识笔记 | 概念/工具/模式/协作；不覆盖本仓细则 | [`指南/通识/00-目录.md`](../指南/通识/00-目录.md) |
+| GitHub 收集 | 外部摘录；摘录≠ SOP；拉 `prompts/收集_GitHub.md` | [`指南/GitHub收集/00-目录.md`](../指南/GitHub收集/00-目录.md) |
 | 过程只留票复盘 | 禁独立 `logs/` 开发日志目录 | 分层宪法；sync-docs |
 | 画面技能 | 建文档 / 实现画面 | F17 / F18 + `细则/skills/` |

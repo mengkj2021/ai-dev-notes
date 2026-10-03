@@ -89,6 +89,7 @@ examples/<端>/ 或 prompts/shared/workbench
 | 按票开发 | `prompts/票_接票开发.md` |
 | 只问规格 | `prompts/问答_式样问答.md` |
 | 文档对齐代码 | `prompts/文档_文档整理.md` / `sync-docs` |
+| GitHub 摘录 | `prompts/收集_GitHub.md` |
 | 提交推送 | `prompts/git_提交推送.md` |
 | 新画面（Android） | `create-screen-doc` · `implement-screen` |
 
@@ -101,4 +102,4 @@ examples/<端>/ 或 prompts/shared/workbench
 
 ---
 
-下钻：[指南索引](README.md) · [定位与现状](AI开发实践-定位与现状.md) · [通识](AI开发/00-目录.md) · [分层](../宪法/文档分层约定.md)
+下钻：[指南索引](README.md) · [定位与现状](AI开发实践-定位与现状.md) · [通识](通识/00-目录.md) · [分层](../宪法/文档分层约定.md)

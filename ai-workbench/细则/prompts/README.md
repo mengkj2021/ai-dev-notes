@@ -11,3 +11,4 @@
 | [交叉审查.md](交叉审查.md) | `prompts/票_交叉审查.md` |
 | [提交推送.md](提交推送.md) | `prompts/git_提交推送.md` |
 | [拉取最新代码.md](拉取最新代码.md) | `prompts/git_拉取最新代码.md` |
+| [GitHub收集.md](GitHub收集.md) | `prompts/收集_GitHub.md` |
