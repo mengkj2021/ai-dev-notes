@@ -3,8 +3,8 @@ description: AI 全量开发约定，起票制、文档先行，以 project-docs
 globs: **/*
 alwaysApply: true
 enabled: true
-updatedAt: 2026-09-05
-provider: both
+updatedAt: 2026-10-04
+provider: all
 ---
 
 # AI 全量开发约定

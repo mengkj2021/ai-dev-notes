@@ -1,5 +1,7 @@
 #!/bin/sh
 # F19：push 前自动跑 ktlintCheck；失败则拒绝推送（不改历史、不自动提交）
+# F56：每次 push 都先跑 scripts/check-shell-sync.mjs，校验 shared 源与三个工具目录的壳逐字一致
+#      工作区口径漂移 → 中止 push；本次远端基线已提交内容口径漂移 → 只警告不拦
 # 启用：在仓库根执行  git config core.hooksPath .githooks
 # 本文件须可执行（git 索引 100755）；否则 macOS/Linux 上 hooksPath 启用后仍可能静默不跑
 #
@@ -8,8 +10,61 @@
 ROOT=$(git rev-parse --show-toplevel) || exit 1
 zero=0000000000000000000000000000000000000000
 
+SHELL_FILES="shared/rules/dev-convention.md shared/rules/git-convention.md shared/rules/sync-convention.md shared/skills/create-screen-doc/SKILL.md shared/skills/implement-screen/SKILL.md shared/skills/sync-docs/SKILL.md .codebuddy/rules/dev-convention/RULE.mdc .codebuddy/rules/git-convention/RULE.mdc .codebuddy/rules/sync-convention/RULE.mdc .codebuddy/skills/create-screen-doc/SKILL.md .codebuddy/skills/implement-screen/SKILL.md .codebuddy/skills/sync-docs/SKILL.md .cursor/rules/dev-convention.mdc .cursor/rules/git-convention.mdc .cursor/rules/sync-convention.mdc .cursor/skills/create-screen-doc/SKILL.md .cursor/skills/implement-screen/SKILL.md .cursor/skills/sync-docs/SKILL.md .dsh/rules/dev-convention/RULE.mdc .dsh/rules/git-convention/RULE.mdc .dsh/rules/sync-convention/RULE.mdc .dsh/skills/create-screen-doc/SKILL.md .dsh/skills/implement-screen/SKILL.md .dsh/skills/sync-docs/SKILL.md"
+
+# 壳同步门禁（F56）：工作区先查一遍（能抓「改了 shared 忘了同步」）；再用 REF^ 的已提交内容查一遍。
+# 只读文件、不依赖 node 的子进程能力，因此受限沙箱下同样有效。
+run_shell_sync_check() {
+  if ! command -v node >/dev/null 2>&1; then
+    echo "[pre-push] 警告：本机无 node，跳过壳同步校验（scripts/check-shell-sync.mjs）"
+    return 0
+  fi
+
+  echo "[pre-push] 校验 shared 源与三工具目录的壳是否逐字一致 …"
+  if ! node "$ROOT/scripts/check-shell-sync.mjs"; then
+    echo ""
+    echo "[pre-push] 壳同步漂移，已中止 push。"
+    echo "  修法：先改 shared/（细则正文在 ai-workbench/），再整份复制到 .codebuddy/ · .cursor/ · .dsh/"
+    echo "  紧急跳过（不推荐）：git push --no-verify"
+    exit 1
+  fi
+}
+
+# 把某个提交里的壳落到临时目录，再按同一套清单比对（避免工作区脏读干扰）
+run_committed_shell_sync_check() {
+  ref="$1"
+  [ -n "$ref" ] || return 0
+  git rev-parse --verify --quiet "$ref^{commit}" >/dev/null 2>&1 || return 0
+  command -v node >/dev/null 2>&1 || return 0
+
+  tmp=$(mktemp -d 2>/dev/null) || tmp="$ROOT/.git/dsh-shell-sync.$$"
+  mkdir -p "$tmp" || return 0
+  # 该 ref 里还没有壳（如首次提交壳的提交）：无可比对，跳过；其余按「缺一即失败」由脚本报出
+  have=0
+  for f in $SHELL_FILES; do
+    if git cat-file -e "$ref:$f" 2>/dev/null; then
+      have=1
+      mkdir -p "$tmp/$(dirname "$f")"
+      git cat-file blob "$ref:$f" >"$tmp/$f"
+    fi
+  done
+  if [ "$have" -eq 0 ]; then
+    rm -rf "$tmp"
+    return 0
+  fi
+  if ! node "$ROOT/scripts/check-shell-sync.mjs" --root "$tmp"; then
+    echo ""
+    echo "[pre-push] 警告：$ref 的已提交内容里壳不同步（工作区那一关已通过）。"
+    echo "  这通常意味着行尾/大小写以外的历史漂移，建议顺手对齐后再提交。"
+    rm -rf "$tmp"
+    return 0
+  fi
+  rm -rf "$tmp"
+}
+
 # stdin：每行 local_ref local_sha remote_ref remote_sha
 need_ktlint=0
+check_ref=""
 while read -r local_ref local_sha remote_ref remote_sha
 do
   # 删除远端分支等：无本地 tip，跳过检查
@@ -17,21 +72,26 @@ do
     continue
   fi
   if [ "$remote_sha" = "$zero" ]; then
-    # 新分支：相对默认/主分支估范围；失败则对该 tip 与其父比较
-    range="$local_sha"
+    # 新分支：优先用本地 main 的 tip 作基准；没有则退回该 tip 的父提交
     if git rev-parse --verify origin/main >/dev/null 2>&1; then
-      range="origin/main..$local_sha"
+      check_ref="origin/main"
     elif git rev-parse --verify main >/dev/null 2>&1; then
-      range="main..$local_sha"
+      check_ref="main"
+    else
+      check_ref="$local_sha^"
     fi
+    range="$check_ref..$local_sha"
   else
+    check_ref="$remote_sha"
     range="$remote_sha..$local_sha"
   fi
   if git diff --name-only "$range" 2>/dev/null | grep -E '^examples/android/.*\.(kt|kts)$' >/dev/null 2>&1; then
     need_ktlint=1
-    break
   fi
 done
+
+run_shell_sync_check
+run_committed_shell_sync_check "$check_ref"
 
 if [ "$need_ktlint" -eq 0 ]; then
   echo "[pre-push] 本次推送无 examples/android/ 下 .kt/.kts 变更，跳过 ktlintCheck"

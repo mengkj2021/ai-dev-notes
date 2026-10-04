@@ -18,14 +18,19 @@ shared/skills/<skill-name>/
 
 ## 同步到各工具
 
-统一源在 `shared/skills/<name>/`；改完**必须**同步两份，禁止只改一处：
+统一源在 `shared/skills/<name>/`；改完**必须**同步三份，禁止只改一处：
 
 | 工具 | 技能实际位置 |
 |------|--------------|
 | CodeBuddy | `.codebuddy/skills/<skill-name>/SKILL.md` |
 | Cursor | `.cursor/skills/<skill-name>/SKILL.md`（项目技能） |
+| DeepSeek Harness（DSH） | `.dsh/skills/<skill-name>/SKILL.md`（项目技能，自动发现） |
 
 可选：`assets/` 一并复制。流程类技能变更时，对照 `examples/project-docs/画面/README.md`「新增画面」等权威摘要是否仍一致。
+
+同步是否漏了不用靠眼睛：`node scripts/check-shell-sync.mjs` 校验 6 组壳 × 4 份；`.githooks/pre-push` 每次 push 自动跑一遍，漂移即拒绝推送。
+
+> DSH 技能只认 `name` / `description` 等 frontmatter。项目级技能它按 `.dsh/skills/` → `.agents/skills/` 顺序解析，**前面的遮蔽后面的**；因此**不要**在 `.agents/skills/` 另放同名技能，否则改的可能是那份没被用到的。`.agents/skills/` 下已只保留说明文件，散落副本被 `.gitignore` 挡住、也会被上面的脚本报出。
 
 ## 当前技能
 

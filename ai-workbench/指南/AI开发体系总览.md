@@ -45,7 +45,7 @@ examples/<端>/ 或 prompts/shared/workbench
 
 | 通道 | 何时 | 本仓 |
 |---|---|---|
-| **rules** | 每票都要、几句说清 | `shared/rules/` |
+| **rules** | 每票都要、几句说清 | `shared/rules/` → `.codebuddy/` · `.cursor/` · `.dsh/` |
 | **prompts** | 填票号跑完一条流水线 | `prompts/` |
 | **skills** | 可命名重复活 | `create-screen-doc` · `implement-screen` · `sync-docs` |
 | **项目文档** | 规格 / 是否实现 | `examples/project-docs/` · 该车道 status |
@@ -93,7 +93,19 @@ examples/<端>/ 或 prompts/shared/workbench
 | 提交推送 | `prompts/git_提交推送.md` |
 | 新画面（Android） | `create-screen-doc` · `implement-screen` |
 
-## 9. 刻意不做
+## 9. 三个工具
+
+同一份 `shared/` 壳同步三处，禁止只改一处：
+
+| 工具 | rules | skills |
+|---|---|---|
+| CodeBuddy | `.codebuddy/rules/<name>/RULE.mdc` | `.codebuddy/skills/<name>/SKILL.md` |
+| Cursor | `.cursor/rules/<name>.mdc` | `.cursor/skills/<name>/SKILL.md` |
+| DeepSeek Harness（DSH） | `.dsh/rules/<name>/RULE.mdc` | `.dsh/skills/<name>/SKILL.md` |
+
+DSH 的工作区指令只自动注入根 `AGENTS.md`（逐级就近），`.dsh/rules/` **不会被注入**，须按指针打开；同步可用 `node scripts/check-shell-sync.mjs` 自查，push 前门禁也会自动跑。细则：[三工具同步](../细则/rules/三工具同步.md)。
+
+## 10. 刻意不做
 
 - 进度不写进 `project-docs`
 - 不建独立 `logs/`

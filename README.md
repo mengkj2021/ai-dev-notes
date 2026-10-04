@@ -24,14 +24,14 @@ prompts/ + shared  ──▶ include ──▶  ai-workbench/
 | 层 | 路径 |
 |---|---|
 | 编排壳 | [`prompts/`](prompts/) |
-| 纪律 / 技能 | [`shared/`](shared/) |
+| 纪律 / 技能 | [`shared/`](shared/)（同步到 `.codebuddy/` · `.cursor/` · `.dsh/`） |
 | 笔记正文 | [`ai-workbench/`](ai-workbench/) |
 | 笔记进度 | [`ai-workbench/体系/`](ai-workbench/体系/) |
 | 例子规格 | [`examples/project-docs/`](examples/project-docs/) |
 | 例子进度 | [`examples/project-status/`](examples/project-status/) |
 | 例子代码 | [`examples/android/`](examples/android/) · [`examples/windows/`](examples/windows/) |
 
-克隆后：`git config core.hooksPath .githooks`。push 含 Kotlin 时对 `examples/android` 跑 ktlint。
+克隆后：`git config core.hooksPath .githooks`。push 时门禁两道：`shared/` 与三工具目录的壳须同步（`scripts/check-shell-sync.mjs`），命中 Kotlin 变更时跑 ktlint。
 
 ## 例子：图片整理
 
@@ -48,11 +48,13 @@ Android 版号 1.0.0 / 2。APK 发版脚本在例子里：[`examples/android/scr
 
 ```
 ├── prompts/  shared/  ai-workbench/     # 笔记；体系票在 ai-workbench/体系/
+├── .codebuddy/  .cursor/  .dsh/         # 三工具的 rules / skills 落地副本（源在 shared/）
 ├── examples/
 │   ├── project-docs/                    # 图片整理规格
 │   ├── project-status/                  # android / windows
 │   ├── android/                         # Gradle；scripts/ 发 APK
 │   └── windows/                         # 空位
+├── .githooks/  scripts/                 # pre-push 门禁（壳同步 + ktlint）/ 校验脚本
 └── README.md
 ```
 

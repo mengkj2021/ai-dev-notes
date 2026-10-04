@@ -3,13 +3,13 @@
 > **权威落位说明**（主题：AI 配置四象限）。权威目录为本目录（`ai-workbench/`）；产品真相在 `examples/project-docs/` / `examples/project-status/`，**不**整份复制进常驻 rules。  
 > 口诀：`rules = 红绿灯`；`prompts = 这次怎么开车`；`skills = 某一类活的标准作业`；`ai-workbench = 工具箱 + 元文档`；`项目文档 = 地图（按需打开）`。  
 > 闭环见 [文档分层约定.md](文档分层约定.md) **§0**。  
-> 下一号：Android [`阶段 README`](../../examples/project-status/android/阶段/README.md)（**F54** / Bug20 / S10 / T5）；体系 [`阶段 README`](../体系/阶段/README.md)（**F55**）。
+> 下一号：Android [`阶段 README`](../../examples/project-status/android/阶段/README.md)（**F55** / Bug20 / S10 / T5）；体系 [`阶段 README`](../体系/阶段/README.md)（**F57**）。
 
 ## 1. 四象限
 
 | 通道 | 何时用 | 体积 | 本仓库路径 |
 |---|---|---|---|
-| **rules** | 每票高频、几句说清、违了易出事 | 短；常驻注入 | `shared/rules/` → 同步 `.cursor` / `.codebuddy` |
+| **rules** | 每票高频、几句说清、违了易出事 | 短；常驻注入 | `shared/rules/` → 同步 `.cursor` / `.codebuddy` / `.dsh` |
 | **prompts** | 端到端流程 + 填写区，拉入才跑 | 中 | `prompts/`（仓库根） |
 | **skills** | 可命名触发、可复用 SOP | 中长；按需 | `shared/skills/<name>/`（细则在 `ai-workbench/细则/skills/`） |
 | **项目文档** | 式样 / 画面 / 架构 / 票库真相 | 可很长 | `examples/project-docs/` · `examples/project-status/` — **只引用路径与章节，不塞进 rules** |
@@ -38,11 +38,21 @@
 
 | 文件 | 落位 | 备注 |
 |---|---|---|
-| `sync-convention` | rules | 双工具同步 |
+| `sync-convention` | rules | 三工具同步（CodeBuddy / Cursor / DeepSeek Harness） |
 | `dev-convention` | rules | 起票制、文档先行、一票一会话、读文档剂量、拆票/步骤短句 |
 | `git-convention` | rules | 提交编码、add、push 门禁、合入方式开关、`ticket/` 分支与绿黄红 |
 
 拆票 / 步骤 / 分支：短句在 `dev`/`git`，细则在 `ai-workbench/细则/接票/` 与票模板 / 票 README「母题与子票」。
+
+三工具落位（同一份壳同步三处；DSH 只自动注入根 `AGENTS.md`，`.dsh/rules/` 须按指针读；`scripts/check-shell-sync.mjs` 校验，push 前门禁自动跑）：
+
+| 工具 | rules | skills |
+|---|---|---|
+| CodeBuddy | `.codebuddy/rules/<name>/RULE.mdc` | `.codebuddy/skills/<name>/SKILL.md` |
+| Cursor | `.cursor/rules/<name>.mdc` | `.cursor/skills/<name>/SKILL.md` |
+| DeepSeek Harness（DSH） | `.dsh/rules/<name>/RULE.mdc` | `.dsh/skills/<name>/SKILL.md` |
+
+细则：[`ai-workbench/细则/rules/三工具同步.md`](../细则/rules/三工具同步.md)；根 `AGENTS.md` 有工具总表。
 
 ### 4.2 prompts（已有）
 
@@ -91,7 +101,7 @@
 | 先测后写 | 可测纯逻辑顺序 | `细则/接票/先测后写.md`（依赖产品 **F16**） |
 | 合入方式开关 | `direct-main` / `via-mr` | `细则/rules/git约定.md` |
 | 规则瘦身 | 常驻短、按需长 | 本文 §2 + 开发约定 |
-| AI 通识笔记 | 概念/工具/模式/协作；不覆盖本仓细则 | [`指南/通识/00-目录.md`](../指南/通识/00-目录.md) |
+| AI 通识笔记 | 概念/工具/模式/协作；不覆盖本仓细则 | [`指南/通识/00-目录.md`](../指南/通识/00-目录.md)；DSH 口径见 [2.4](../指南/通识/工具/04-DeepSeek%20Harness%20使用.md) |
 | GitHub 收集 | 外部摘录；摘录≠ SOP；拉 `prompts/收集_GitHub.md` | [`指南/GitHub收集/00-目录.md`](../指南/GitHub收集/00-目录.md) |
 | 过程只留票复盘 | 禁独立 `logs/` 开发日志目录 | 分层宪法；sync-docs |
 | 画面技能 | 建文档 / 实现画面 | F17 / F18 + `细则/skills/` |

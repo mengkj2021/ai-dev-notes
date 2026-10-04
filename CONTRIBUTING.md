@@ -5,7 +5,7 @@
 ## 改 AI 体系（prompts / shared / ai-workbench）
 
 1. 先改 `shared/` 或 `ai-workbench/`；`prompts/` 只做编排壳。  
-2. 改 rules / skills 后同步 `.cursor/` 与 `.codebuddy/`（[双工具同步](shared/rules/sync-convention.md)）。  
+2. 改 rules / skills 后同步 `.cursor/`、`.codebuddy/` 与 `.dsh/`（[三工具同步](shared/rules/sync-convention.md)）；`node scripts/check-shell-sync.mjs` 校验，push 前门禁会自动跑。  
 3. 起票挂 **[体系车道](ai-workbench/体系/README.md)**（FN · 节点 P），或极简附记。  
 4. 入口：[体系总览](ai-workbench/指南/AI开发体系总览.md)
 

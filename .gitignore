@@ -28,5 +28,18 @@ examples/android/gradle/gradle-daemon-jvm.properties
 !.codebuddy/skills
 !.codebuddy/skills/**
 
+# .dsh（DeepSeek Harness）：仅提交 rules/ 与 skills/，会话与凭据等本地数据不入库
+.dsh/*
+!.dsh/
+!.dsh/rules
+!.dsh/rules/**
+!.dsh/skills
+!.dsh/skills/**
+
+# .agents/skills：只保留说明，防同名技能散落（DSH 里会被 .dsh/skills 遮蔽）
+.agents/skills/**
+!.agents/skills/
+!.agents/skills/README.md
+
 # 本地临时阅读/分析（不入库）
 .tmp/

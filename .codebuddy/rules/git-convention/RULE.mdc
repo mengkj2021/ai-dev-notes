@@ -3,8 +3,8 @@ description: git 提交纪律，中文提交 -F 文件、禁 git add .、禁 --f
 globs: **/*
 alwaysApply: true
 enabled: true
-updatedAt: 2026-09-05
-provider: both
+updatedAt: 2026-10-04
+provider: all
 ---
 
 # git 操作约定（提交纪律）

@@ -7,4 +7,4 @@
 |---|---|
 | [开发约定.md](开发约定.md) | `shared/rules/dev-convention.md` |
 | [git约定.md](git约定.md) | `shared/rules/git-convention.md` |
-| [双工具同步.md](双工具同步.md) | `shared/rules/sync-convention.md` |
+| [三工具同步.md](三工具同步.md) | `shared/rules/sync-convention.md` |

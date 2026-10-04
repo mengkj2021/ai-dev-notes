@@ -33,7 +33,7 @@
 
 **当前：`direct-main`（不需要提 MR）**
 
-切换：改本表「当前」一行，或口头「合入方式改成 via-mr / direct-main」由 AI 回写（须同步 `.cursor/` 与 `.codebuddy/`）。
+切换：改本表「当前」一行，或口头「合入方式改成 via-mr / direct-main」由 AI 回写（须同步 `.cursor/`、`.codebuddy/` 与 `.dsh/`）。
 
 `direct-main` 下黄/红档分支为可选；`--force` 仍禁止。
 
@@ -51,11 +51,17 @@
 
 ## 勿提交内容（摘要）
 
-`build/`、`.gradle/`、`.kotlin/`、`.idea/`、`*.iml`、`local.properties`、wrapper zip、`.DS_Store`、密钥、`*.log`、`.codebuddy/plans/` 等（完整见根 README）。
+`build/`、`.gradle/`、`.kotlin/`、`.idea/`、`*.iml`、`local.properties`、wrapper zip、`.DS_Store`、密钥、`*.log`、`.codebuddy/plans/` 等（完整见根 README 与 `.gitignore`）。
 
-## push 前门禁（产品票 F19 · ktlint）
+## push 前门禁（产品票 F19 · ktlint；体系票 F56 · 壳同步）
 
-克隆后执行一次：`git config core.hooksPath .githooks`。此后 push 时：若本次推送范围内有 `examples/android/` 下 `.kt` / `.kts` 变更则跑 `ktlintCheck`，失败拒绝推送；**仅文档等非 Kotlin 变更则跳过**（秒级结束）。紧急跳过：`git push --no-verify`（不推荐）。
+克隆后执行一次：`git config core.hooksPath .githooks`。此后每次 push 顺序：
+
+1. **壳同步**：`scripts/check-shell-sync.mjs` 比对 `shared/` 与 `.codebuddy/`、`.cursor/`、`.dsh/` 的 24 份壳；漂移即拒绝推送（细则见 [三工具同步](三工具同步.md)）
+2. **ktlint**：本次推送范围内有 `examples/android/` 下 `.kt` / `.kts` 变更才跑 `ktlintCheck`，失败拒绝推送；**仅文档等非 Kotlin 变更则跳过**（秒级结束）
+3. 已提交内容的那一遍壳同步只警告不拦（工作区已保证同步，历史漂移不阻塞无关推送）
+
+紧急跳过：`git push --no-verify`（不推荐）。
 
 `.githooks/pre-push` **须为可执行**（Git 索引 `100755`）。若 hook 不跑，先查：`git ls-files -s .githooks/pre-push` 是否为 `100755`，以及 `git config --get core.hooksPath` 是否为 `.githooks`。
 
@@ -65,4 +71,4 @@
 - [ ] 无预期外本地产物
 - [ ] `git log -1` 中文正常
 - [ ] 提交说明含改了什么 / 为什么与票号
-- [ ] 规则已从 `shared/rules/` 同步到两工具目录
+- [ ] 壳同步已通过（hook 自动跑；也可手动 `node scripts/check-shell-sync.mjs`）
