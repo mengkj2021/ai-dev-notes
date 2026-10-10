@@ -11,6 +11,7 @@ local.properties
 
 # 本地 Gradle 发行包（约 130MB，超过 GitHub 100MB 单文件限制，不提交）
 examples/android/gradle/wrapper/*.zip
+examples/windows/gradle/wrapper/*.zip
 # Gradle Daemon JVM toolchain（updateDaemonJvm 生成本地配置）
 examples/android/gradle/gradle-daemon-jvm.properties
 

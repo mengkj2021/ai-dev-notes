@@ -5,7 +5,7 @@
 1. 人定意图与验收；规格不写进 alwaysApply rules。
 2. 先起票。产品：`examples/project-status/android|windows/`。笔记：`ai-workbench/体系/`。
 3. 拉 `prompts/` 壳；细则 ▶ include → 打开 `ai-workbench/` 分册全文。
-4. 规格只在 `examples/project-docs/`。码在 `examples/android/`。Windows 未立项勿改。
+4. 规格只在 `examples/project-docs/`。码在 `examples/android/` 或 `examples/windows/`（按接票车道）。
 5. `create-screen-doc` / `implement-screen` 仅 Android。
 6. 提交须用户明确要求；中文 commit 用 `-F`；禁止 `git add .`。
 7. 改 rules / skills：先 `shared/`，再同步三工具目录（下表）。

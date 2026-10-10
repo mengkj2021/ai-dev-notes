@@ -1,13 +1,13 @@
 # 画面 · 文档索引
 
-一层目录 = 一个 **已实现** route。Android 代码：`examples/android/.../ui/<screen>/`。Windows：未实现。路由表：[路由设计.md](../路由设计.md)。两端：[两端差异.md](../两端差异.md)。
+一层目录 = 一个 **已实现** route。Android：`examples/android/.../ui/<screen>/`。Windows：`examples/windows/.../ui/<screen>/`（开源许可仍缺）。路由表：[路由设计.md](../路由设计.md)。两端：[两端差异.md](../两端差异.md)。
 
 > **文言**：用户可见文案以 `res/values*/strings.xml` 为准（简中 + ja/en；跟随系统，缺译回退简中）。画面文档中文示例即可，不逐画面维护三语。教程正文：**F12** 扩写、**S6** 分段，三语同步。
 
 ## 约定
 
 - 文档：`examples/project-docs/画面/<名>/`（总览 `README.md` + 按需区域文件）；新建复制 [画面文档模板](../../../ai-workbench/模板/画面文档/)
-- 本文档描述的是 **Android 例子** 的已实现画面。Windows 未实现，差异只记在 [两端差异.md](../两端差异.md)，不在本表逐行拆端。
+- 本文档描述两端共用产品意图；实现落点见各端代码与 [两端差异.md](../两端差异.md)，不在本表逐行拆端。
 - 代码：`ui/<screen>/` + 同包 ViewModel；route 在 `Routes.kt`
 - 有 FAB 的可滚列表：底边留空（Bug9；`FabOverlayListContentPadding`）
 - **区域深度**：默认一画面一 README；复杂再加同级 md。**例外 · 主画面**可按 Tab 分子目录（`一览.md` / `菜单.md`）+ 共用 `列表项.md`；其它画面勿无故三级嵌套

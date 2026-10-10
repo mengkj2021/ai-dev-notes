@@ -4,7 +4,7 @@
 
 ## 1. 一句话
 
-本仓库 = **个人 AI 开发笔记** + **练手例子**（图片整理：Android 已有，Windows 空位）。  
+本仓库 = **个人 AI 开发笔记** + **练手例子**（图片整理：Android 已有，Windows 阶段①）。  
 人定意图与验收；AI 按票改当前目标并写回；规格不进常驻 rules。
 
 ## 2. 目录
@@ -16,7 +16,7 @@
 │   ├── project-docs/                    # 图片整理规格
 │   ├── project-status/                  # android / windows 票
 │   ├── android/                         # Gradle；scripts/ 发 APK
-│   └── windows/                         # 空位
+│   └── windows/                         # Compose Desktop（阶段①）
 └── README.md
 ```
 
@@ -71,7 +71,7 @@ examples/<端>/ 或笔记层（prompts/ · shared/ · ai-workbench/）
 | 产品先去哪？ | [选车道](../../examples/project-status/README.md) |
 | 笔记层还剩什么？ | [体系待对应](../体系/阶段/维护/待对应.md) |
 | Android 还剩什么？ | [android 阶段4 待对应](../../examples/project-status/android/阶段/阶段4-维护与迭代/待对应.md) |
-| Windows？ | [windows README](../../examples/project-status/windows/README.md)（未立项） |
+| Windows？ | [windows 阶段1 待对应](../../examples/project-status/windows/阶段/阶段1-立项与骨架/待对应.md) |
 | App 长什么样？ | [project-docs](../../examples/project-docs/README.md) |
 
 ## 7. 人 vs AI
@@ -110,8 +110,6 @@ DSH 工作区指令：**`AGENTS.md` 正文 + `CLAUDE.md` 转发桩**（逐级就
 - 进度不写进 `project-docs`
 - 不建独立 `logs/`
 - 不把规格塞进 rules
-- 本轮不实现 Windows
-
 ---
 
 下钻：[指南索引](README.md) · [定位与现状](AI开发实践-定位与现状.md) · [通识](通识/00-目录.md) · [分层](../宪法/文档分层约定.md)

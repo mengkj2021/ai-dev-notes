@@ -1,0 +1,20 @@
+[versions]
+kotlin = "2.4.10"
+compose-plugin = "1.12.1"
+coroutines = "1.10.2"
+serialization = "1.8.1"
+metadata-extractor = "2.19.0"
+commons-imaging = "1.0.0-alpha5"
+
+[libraries]
+kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
+kotlinx-coroutines-swing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing", version.ref = "coroutines" }
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization" }
+metadata-extractor = { group = "com.drewnoakes", name = "metadata-extractor", version.ref = "metadata-extractor" }
+commons-imaging = { group = "org.apache.commons", name = "commons-imaging", version.ref = "commons-imaging" }
+
+[plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
