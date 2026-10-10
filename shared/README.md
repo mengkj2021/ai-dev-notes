@@ -9,7 +9,7 @@ include 语义：[`ai-workbench/宪法/include约定.md`](../ai-workbench/宪法
 ```
 prompts/ + shared/  ←▶ include→  ai-workbench/
     ↓ 读取 examples/project-docs / 产品 status 或 ai-workbench/体系
-    ↓ 变更 examples/<端>/ 或 AI 层
+    ↓ 变更 examples/<端>/ 或笔记层
     ↓ 回写 docs / 该车道 status
 ```
 

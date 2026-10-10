@@ -2,6 +2,8 @@
 
 **先读**：[AI开发体系总览.md](AI开发体系总览.md) · [定位与现状](AI开发实践-定位与现状.md)。
 
+> **通识** / **GitHub收集** 是给人看的参考与摘录，**不是**接票纪律。干活跟总览、宪法、`prompts/`。
+
 | 指南 | 用途 |
 |---|---|
 | [AI开发体系总览.md](AI开发体系总览.md) | 目录、闭环、起票、进度 |
@@ -9,7 +11,9 @@
 | [框架效果短结论.md](框架效果短结论.md) | 起票制实际效果与弱点 |
 | [如何使用-project-docs.md](如何使用-project-docs.md) | 规格怎么读、怎么写回 |
 | [如何使用-project-status.md](如何使用-project-status.md) | 产品车道的阶段 / 待对应 / 票 |
-| [通识/](通识/00-目录.md) | 通识笔记（不是接票宪法）；工具篇含 [2.4 DeepSeek Harness](通识/工具/04-DeepSeek%20Harness%20使用.md) 等 |
-| [GitHub收集/](GitHub收集/00-目录.md) | 前沿摘录；拉 `prompts/收集_GitHub.md` |
+| [通识/](通识/00-目录.md) | 通识笔记（≠ 接票宪法）；工具篇含 [2.4 DeepSeek Harness](通识/工具/04-DeepSeek%20Harness%20使用.md) 等 |
+| [GitHub收集/](GitHub收集/00-目录.md) | 前沿摘录快照；拉 `prompts/收集_GitHub.md` |
+| [仓库结构总览.md](仓库结构总览.md) | 转发桩 → 总览 |
+| [用AI开发本仓.md](用AI开发本仓.md) | 转发桩 → 总览 |
 
 宪法与细则见上级 [README.md](../README.md)。体系票：[../体系/](../体系/README.md)。

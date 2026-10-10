@@ -3,7 +3,7 @@
 > **权威落位说明**（主题：AI 配置四象限）。权威目录为本目录（`ai-workbench/`）；产品真相在 `examples/project-docs/` / `examples/project-status/`，**不**整份复制进常驻 rules。  
 > 口诀：`rules = 红绿灯`；`prompts = 这次怎么开车`；`skills = 某一类活的标准作业`；`ai-workbench = 工具箱 + 元文档`；`项目文档 = 地图（按需打开）`。  
 > 闭环见 [文档分层约定.md](文档分层约定.md) **§0**。  
-> 下一号：Android [`阶段 README`](../../examples/project-status/android/阶段/README.md)（**F55** / Bug20 / S10 / T5）；体系 [`阶段 README`](../体系/阶段/README.md)（**F57**）。
+> 下一号：Android [`阶段 README`](../../examples/project-status/android/阶段/README.md)（**F55** / Bug20 / S10 / T5）；体系 [`阶段 README`](../体系/阶段/README.md)（**F58**）。
 
 ## 1. 四象限
 
@@ -44,7 +44,7 @@
 
 拆票 / 步骤 / 分支：短句在 `dev`/`git`，细则在 `ai-workbench/细则/接票/` 与票模板 / 票 README「母题与子票」。
 
-三工具落位（同一份壳同步三处；DSH 只自动注入根 `AGENTS.md`，`.dsh/rules/` 须按指针读；`scripts/check-shell-sync.mjs` 校验，push 前门禁自动跑）：
+三工具落位（同一份壳同步三处；DSH：`AGENTS.md` 正文 + `CLAUDE.md` 转发桩，`.dsh/rules/` 须按指针读；`scripts/check-shell-sync.mjs` 校验，需 Node；push 前门禁自动跑）：
 
 | 工具 | rules | skills |
 |---|---|---|

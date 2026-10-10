@@ -17,7 +17,7 @@ GitHub 仓库现名 **`ai-dev-notes`**（旧名 `picture-organizer` 会跳转到
 ```
 prompts/ + shared  ──▶ include ──▶  ai-workbench/
         ↓ 读 examples/project-docs + 该车道 status
-        ↓ 改 examples/<android|windows>/ 或 prompts/shared/workbench
+        ↓ 改 examples/<android|windows>/ 或笔记层（prompts/ · shared/ · ai-workbench/）
         ↓ 写回该车道票 + examples/project-docs
 ```
 
@@ -31,7 +31,7 @@ prompts/ + shared  ──▶ include ──▶  ai-workbench/
 | 例子进度 | [`examples/project-status/`](examples/project-status/) |
 | 例子代码 | [`examples/android/`](examples/android/) · [`examples/windows/`](examples/windows/) |
 
-克隆后：`git config core.hooksPath .githooks`。push 时门禁两道：`shared/` 与三工具目录的壳须同步（`scripts/check-shell-sync.mjs`），命中 Kotlin 变更时跑 ktlint。
+克隆后：`git config core.hooksPath .githooks`。push 时门禁两道：`shared/` 与三工具目录的壳须同步（`node scripts/check-shell-sync.mjs`，**需 Node**），命中 Kotlin 变更时跑 ktlint。
 
 ## 例子：图片整理
 

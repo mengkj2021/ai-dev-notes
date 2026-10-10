@@ -8,7 +8,7 @@
 | 是 | 不是 |
 |---|---|
 | 产品行为、包结构（Android）、route、画面规格、Room | Roadmap（→ 对应车道 `examples/project-status/`） |
-| 与代码冲突时以当前例子源码为准，再回写 | AI 纪律（→ `shared/` · `prompts/` · workbench） |
+| 与代码冲突时以当前例子源码为准，再回写 | AI 纪律（→ `shared/` · `prompts/` · `ai-workbench/`） |
 
 ## 何时打开
 

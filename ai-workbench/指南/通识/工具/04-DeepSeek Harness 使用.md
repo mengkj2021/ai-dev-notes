@@ -20,6 +20,7 @@
 | 项 | 值 |
 |---|---|
 | 候选文件名 | `AGENTS.md`、`CLAUDE.md`（同级内容一致时只渲染一次） |
+| 本仓约定 | **正文只维护 `AGENTS.md`**；根 `CLAUDE.md` 为短转发桩（指向 AGENTS），禁止双份全文 |
 | 本地叠加 | `AGENTS.local.md`、`CLAUDE.local.md` |
 | 加载范围 | 用户级 `$DSH_HOME/AGENTS.md` + 项目链：项目根 → 会话工作目录，逐级（宽 → 具体） |
 | 生效时机 | 首次请求注入一次；在更深目录成功读写后，下一次请求补入该目录的指令 |
@@ -27,7 +28,7 @@
 
 **推论（本仓据此设计）**：DSH **没有** CodeBuddy 那种「会话开始注入常驻 rules」，也**没有** Cursor 的 `globs` / `alwaysApply` 路径触发。所以：
 
-- 根 `AGENTS.md` 是 DSH 唯一必然进上下文的常驻面 → 短纪律写在那里；
+- 根 `AGENTS.md` 是纪律正文；`CLAUDE.md` 只转发，避免双份维护与双倍 token；
 - `.dsh/rules/` 下的三份规则**不会自动进上下文**，要靠 `AGENTS.md` 里的指针、或 Agent 主动打开；
 - 长规格、画面文档继续按需读（与「规则瘦身」一致）。
 

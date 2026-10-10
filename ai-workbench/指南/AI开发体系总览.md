@@ -34,7 +34,7 @@
         ↓ 读
 examples/project-docs + 该车道 status
         ↓ 改
-examples/<端>/ 或 prompts/shared/workbench
+examples/<端>/ 或笔记层（prompts/ · shared/ · ai-workbench/）
         ↓ 写回
 该车道票复盘 · examples/project-docs
 ```
@@ -58,7 +58,7 @@ examples/<端>/ 或 prompts/shared/workbench
 |---|---|---|
 | 起票 | 先选车道；Bug / S / T / F | `模板/票/` → 该车道票库 + 待对应 ☐ |
 | 接票 | 一票一会话；待定不猜 | `prompts/票_接票开发.md` |
-| 实现 | 只改必读路径 | `examples/<端>/` 或 AI 层 + docs |
+| 实现 | 只改必读路径 | `examples/<端>/` 或笔记层 + docs |
 | 收尾 | ✅/❌；待对应删行 | 该车道票目录 |
 | 提交 | 人授权 | `prompts/git_提交推送.md` |
 
@@ -103,7 +103,7 @@ examples/<端>/ 或 prompts/shared/workbench
 | Cursor | `.cursor/rules/<name>.mdc` | `.cursor/skills/<name>/SKILL.md` |
 | DeepSeek Harness（DSH） | `.dsh/rules/<name>/RULE.mdc` | `.dsh/skills/<name>/SKILL.md` |
 
-DSH 的工作区指令只自动注入根 `AGENTS.md`（逐级就近），`.dsh/rules/` **不会被注入**，须按指针打开；同步可用 `node scripts/check-shell-sync.mjs` 自查，push 前门禁也会自动跑。细则：[三工具同步](../细则/rules/三工具同步.md)。
+DSH 工作区指令：**`AGENTS.md` 正文 + `CLAUDE.md` 转发桩**（逐级就近）；`.dsh/rules/` **不会被注入**，须按指针打开。同步：`node scripts/check-shell-sync.mjs`（需 Node），push 前门禁也会跑。细则：[三工具同步](../细则/rules/三工具同步.md)。
 
 ## 10. 刻意不做
 
